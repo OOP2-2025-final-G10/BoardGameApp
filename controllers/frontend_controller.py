@@ -1,20 +1,15 @@
-#フロントエンドへの「通知専用」
 class FrontendController:
 
     @staticmethod
-    def send_scroll_position(x: int, y: int):
-        print(f"[Frontend] Scroll position -> x:{x}, y:{y}")
+    def send_scroll_position(position):
+        x, y = position
+        print(f"[Frontend] Scroll -> x={x}, y={y}")
 
     @staticmethod
     def send_money_update(before: int, after: int):
         diff = after - before
-        print(f"[Frontend] Money update -> {before} → {after} (diff: {diff})")
+        print(f"[Frontend] Money -> {before} → {after} (diff={diff})")
 
     @staticmethod
-    def send_roulette_angle(angle: float):
-        # degree（0〜360）
-        print(f"[Frontend] Roulette angle -> {angle:.2f}")
-
-    @staticmethod
-    def send_roulette_result(value: int):
-        print(f"[Frontend] Roulette result -> {value}")
+    def send_turn_change(turn: int):
+        print(f"[Frontend] Turn -> {turn}")
