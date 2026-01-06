@@ -1,0 +1,138 @@
+@charset "UTF-8";
+
+/* 基本リセット */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: #fff;
+    height: 100vh; /* 画面全体の高さを確保 */
+    padding: 20px;
+    overflow: hidden; /* スクロールバーが出ないように調整 */
+}
+
+/* 共通の枠線スタイル（手書き風） */
+.box {
+    border: 2px solid #333;
+    background-color: #fff;
+    /* 少し手書きっぽく線を歪ませる場合（オプション）
+    border-radius: 2px 4px 3px 5px;
+    */
+}
+
+/* --- 画面全体のレイアウト --- */
+.setup-container {
+    display: flex; /* 左右に並べる */
+    height: 100%;
+    gap: 30px; /* 左右の間隔 */
+}
+
+/* --- 左側：メンバー一覧サイドバー --- */
+.member-sidebar {
+    width: 250px; /* 固定幅 */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.sidebar-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.member-ul {
+    list-style: none;
+    overflow-y: auto; /* 内容が多い場合はスクロール */
+    flex: 1;
+    font-size: 1.2rem;
+}
+
+.member-item {
+    padding: 5px 0;
+}
+
+/* --- 右側：メインエリア --- */
+.setup-main {
+    flex: 1; /* 残りの幅を全て使う */
+    display: flex;
+    flex-direction: column;
+    position: relative; /* STARTボタンの配置基準 */
+}
+
+/* 上部：タイトル */
+.page-header {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.title-box {
+    padding: 10px 50px;
+}
+
+.title-box h1 {
+    font-size: 2.5rem;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+}
+
+/* 中央：登録エリア */
+.registration-area {
+    flex: 1; /* 上下の余白を自動調整して中央に配置 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 100px; /* STARTボタンと被らないように調整 */
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column; /* 縦積みにする */
+    align-items: center;
+    gap: 15px; /* 入力欄とボタンの間隔 */
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 1.2rem;
+    width: 350px;
+    text-align: center;
+}
+
+.join-btn {
+    padding: 5px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.1s;
+}
+
+.join-btn:hover {
+    background-color: #eee;
+}
+
+/* 右下：STARTボタン */
+.footer-area {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.start-btn {
+    display: block;
+    padding: 10px 40px;
+    font-size: 2rem;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.1s;
+}
+
+.start-btn:hover {
+    background-color: #eee;
+}
