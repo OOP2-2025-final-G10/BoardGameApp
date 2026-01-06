@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人生ゲーム - プレイ</title>
+    <style>
+        /* 全体のレイアウト設定 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background-color: #fdfaf2; /* ワイヤーフレームに近い薄いベージュ系 */
+            height: 100vh;
+            display: flex;
+            padding: 15px;
+            overflow: hidden;
+        }
+
+        /* 共通の枠線スタイル */
+        .box-border {
+            border: 2px solid #333;
+            background-color: #fff;
+        }
+
+        /* 画面全体のコンテナ：左メインと右サイドバー */
+        .game-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            gap: 15px;
+        }
+
+        /* --- 左側：メインゲームエリア --- */
+        .game-main {
+            flex: 3; /* 画面の約75% */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* 上部：マップエリア */
+        .map-area {
+            flex: 2.5;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        /* マップ内のズームボタン */
+        .zoom-btns {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .zoom-btns button {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            background: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 下部：ルーレット＆ロゴエリア */
+        .bottom-area {
+            flex: 1;
+            display: flex;
+            gap: 15px;
+        }
+
+        /* ルーレット（正方形の枠の中に円） */
+        .roulette-container {
+            width: 180px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .roulette-circle {
+            width: 120px;
+            height: 120px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* 中央の「人生ゲーム」ロゴ */
+        .game-logo {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            letter-spacing: 0.3em;
+        }
+
+        /* --- 右側：ユーザー情報サイドバー --- */
+        .info-sidebar {
+            flex: 1; /* 画面の約25% */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ユーザー名のバッジ */
+        .user-pill {
+            border: 2px solid #333;
+            padding: 5px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            width: fit-content;
+        }
+
+        /* ステータス情報リスト */
+        .status-info {
+            list-style: none;
+            line-height: 2.5;
+            font-size: 1.1rem;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status-label {
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .status-label::before {
+            content: "～";
+            position: absolute;
+            left: -10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-main">
+            <div class="box-border map-area">
+                マップ
+                <div class="zoom-btns">
+                    <button>+</button>
+                    <button>-</button>
+                </div>
+            </div>
+
+            <div class="bottom-area">
+                <div class="box-border roulette-container">
+                    <div class="roulette-circle">ルーレット</div>
+                </div>
+                <div class="box-border game-logo">
+                    人生ゲーム
+                </div>
+            </div>
+        </div>
+
+        <div class="box-border info-sidebar">
+            <div class="user-pill">
+                <span>🎴</span> User 1
+            </div>
+            
+            <ul class="status-info">
+                <li class="status-item"><span class="status-label">ゴールまでの距離</span><span>────</span></li>
+                <li class="status-item"><span class="status-label">所持金</span><span>────</span></li>
+                <li class="status-item"><span class="status-label">配偶者の有無</span><span>────</span></li>
+                <li class="status-item"><span class="status-label">子供の数</span><span>────</span></li>
+                <li class="status-item"><span class="status-label">持ち会社</span><span>────</span></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
