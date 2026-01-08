@@ -2,8 +2,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from models.stock_prices import StockPrices
-
 def generate_stock_prices(T: int):
     dt = 1 / 30
 
@@ -37,8 +35,6 @@ def generate_stock_prices(T: int):
             S = np.zeros(T)
 
             S[0] = np.random.uniform(50, 150)
-
-            # ===== 日付に関わる値をすべてスケーリング =====
             pump_start   = int(np.random.uniform(70, 90) * time_scale)
             decoy_start  = int(np.random.uniform(20, 40) * time_scale)
             decoy_end    = int(np.random.uniform(45, 60) * time_scale)
@@ -101,7 +97,6 @@ def generate_stock_prices(T: int):
 
             prices[name] = S
 
-        # ===== 全銘柄の振れ幅が125以上か判定 =====
         if all((prices[col].max() - prices[col].min()) >= 125 for col in prices.columns):
             condition_met = False
             for col in prices.columns:
@@ -125,11 +120,10 @@ def generate_stock_prices(T: int):
     
     """
 
-    # ===== DataFrame → 日次 StockPrices の list に変換 =====
-    daily_prices: list[StockPrices] = []
+    daily_prices: list[list[float]] = []
 
     for t in range(T):
         day_prices = [prices[name].iloc[t] for name in stock_names]
-        daily_prices.append(StockPrices(day_prices))
+        daily_prices.append(day_prices)
 
     return daily_prices

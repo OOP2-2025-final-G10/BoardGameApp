@@ -8,3 +8,6 @@ class TurnService:
     def next_turn(self):
         self.turn += 1
         FrontendController.send_turn_change(self.turn)
+
+    def get_current_turn(self):
+        return self.turn

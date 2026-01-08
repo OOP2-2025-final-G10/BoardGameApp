@@ -1,15 +1,10 @@
 class FrontendController:
 
-    @staticmethod
-    def send_scroll_position(position):
+    def __init__(self, driver):
+        self.driver = driver
+
+    def send_scroll_position(self, position):
         x, y = position
-        print(f"[Frontend] Scroll -> x={x}, y={y}")
 
-    @staticmethod
-    def send_money_update(before: int, after: int):
-        diff = after - before
-        print(f"[Frontend] Money -> {before} → {after} (diff={diff})")
-
-    @staticmethod
-    def send_turn_change(turn: int):
-        print(f"[Frontend] Turn -> {turn}")
+        self.driver.execute_script(
+            "window.scrollTo(arguments[0], arguments[1]);", x, y)

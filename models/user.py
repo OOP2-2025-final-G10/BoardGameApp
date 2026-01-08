@@ -1,18 +1,18 @@
-from typing import List
-from .job import Job
-from .stock import Stock
+from models.job import Job
 
 class User:
-    def __init__(self, name: str, initial_money: int):
+    def __init__(self, id: int, name: str, money: int, holdings: dict[str, int], job: Job):
+        self.user_id = id
         self.name = name
-        self.money = initial_money
-        self.holdings: List[Stock] = []
-        self.job: Job = None
+        self.money = money
+        self.holdings = holdings
+        self.job = job
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
+            "user_id": self.user_id,
             "name": self.name,
             "money": self.money,
-            "holdings": [s.to_dict() for s in self.holdings],
+            "holdings": self.holdings,
             "job": self.job.to_dict() if self.job else None
         }
