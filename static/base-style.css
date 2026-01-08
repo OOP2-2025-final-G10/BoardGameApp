@@ -1,6 +1,4 @@
-@charset "UTF-8";
-
-/* 基本リセット */
+/* ===== 共通リセット ===== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -8,131 +6,205 @@
 }
 
 body {
-    font-family: sans-serif;
+    font-family: "Hiragino Sans", "Meiryo", sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ページ別背景 */
+.setup-page {
     background-color: #fff;
-    height: 100vh; /* 画面全体の高さを確保 */
     padding: 20px;
-    overflow: hidden; /* スクロールバーが出ないように調整 */
 }
 
-/* 共通の枠線スタイル（手書き風） */
-.box {
-    border: 2px solid #333;
+.game-page {
+    background-color: #fdfaf2;
+    padding: 15px;
+}
+
+/* 共通枠 */
+.box-border {
+    border: 3px solid #333;
     background-color: #fff;
-    /* 少し手書きっぽく線を歪ませる場合（オプション）
-    border-radius: 2px 4px 3px 5px;
-    */
 }
 
-/* --- 画面全体のレイアウト --- */
+/* ===== setup.html 用 ===== */
+
 .setup-container {
-    display: flex; /* 左右に並べる */
+    display: flex;
     height: 100%;
-    gap: 30px; /* 左右の間隔 */
+    gap: 20px;
 }
 
-/* --- 左側：メンバー一覧サイドバー --- */
 .member-sidebar {
-    width: 250px; /* 固定幅 */
-    display: flex;
-    flex-direction: column;
+    width: 250px;
     padding: 20px;
 }
 
 .sidebar-title {
     text-align: center;
-    margin-bottom: 20px;
-    font-weight: normal;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
 }
 
 .member-ul {
     list-style: none;
-    overflow-y: auto; /* 内容が多い場合はスクロール */
-    flex: 1;
-    font-size: 1.2rem;
 }
 
 .member-item {
-    padding: 5px 0;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 0;
 }
 
-/* --- 右側：メインエリア --- */
 .setup-main {
-    flex: 1; /* 残りの幅を全て使う */
+    flex: 1;
+    position: relative;
     display: flex;
     flex-direction: column;
-    position: relative; /* STARTボタンの配置基準 */
 }
 
-/* 上部：タイトル */
 .page-header {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 50px;
+    padding-top: 40px;
 }
 
 .title-box {
-    padding: 10px 50px;
+    padding: 10px 60px;
 }
 
 .title-box h1 {
-    font-size: 2.5rem;
-    font-weight: normal;
-    letter-spacing: 0.1em;
+    font-size: 3rem;
+    letter-spacing: 0.2em;
 }
 
-/* 中央：登録エリア */
 .registration-area {
-    flex: 1; /* 上下の余白を自動調整して中央に配置 */
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 100px; /* STARTボタンと被らないように調整 */
 }
 
 .input-group {
     display: flex;
-    flex-direction: column; /* 縦積みにする */
+    flex-direction: column;
     align-items: center;
-    gap: 15px; /* 入力欄とボタンの間隔 */
+    gap: 20px;
 }
 
-input[type="text"] {
-    padding: 10px;
-    font-size: 1.2rem;
-    width: 350px;
+#userNameInput {
+    width: 450px;
+    padding: 15px;
+    font-size: 1.3rem;
     text-align: center;
 }
 
 .join-btn {
-    padding: 5px 30px;
-    font-size: 1.2rem;
+    padding: 8px 20px;
+    font-size: 1.1rem;
     cursor: pointer;
-    background-color: #fff;
-    transition: background-color 0.1s;
 }
 
-.join-btn:hover {
-    background-color: #eee;
-}
-
-/* 右下：STARTボタン */
 .footer-area {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 10px;
+    right: 10px;
 }
 
 .start-btn {
-    display: block;
-    padding: 10px 40px;
-    font-size: 2rem;
+    padding: 15px 50px;
+    font-size: 2.5rem;
+    font-weight: bold;
     text-decoration: none;
     color: #333;
-    transition: background-color 0.1s;
 }
 
-.start-btn:hover {
-    background-color: #eee;
+/* ===== game.html 用 ===== */
+
+.game-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 15px;
+}
+
+.game-main {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.map-area {
+    flex: 2.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    position: relative;
+}
+
+.zoom-btns {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.zoom-btns button {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.bottom-area {
+    flex: 1;
+    display: flex;
+    gap: 15px;
+}
+
+.roulette-container {
+    width: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.roulette-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.game-logo {
+    flex: 1;
+    font-size: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.3em;
+}
+
+.info-sidebar {
+    flex: 1;
+    padding: 20px;
+}
+
+.user-pill {
+    border: 2px solid #333;
+    padding: 5px 15px;
+    width: fit-content;
+    font-weight: bold;
+}
+
+.status-info {
+    list-style: none;
+    margin-top: 20px;
+    line-height: 2.5;
 }

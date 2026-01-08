@@ -2,197 +2,36 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>人生ゲーム - 参加登録</title>
-    <style>
-        /* ここにデザイン（CSS）を直接書きます */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: "Hiragino Sans", "Meiryo", sans-serif;
-            background-color: #fff;
-            height: 100vh;
-            padding: 20px;
-            overflow: hidden; /* 画面からはみ出さないように固定 */
-        }
-
-        /* 共通の黒枠スタイル */
-        .box-border {
-            border: 3px solid #333;
-            background-color: #fff;
-        }
-
-        /* 画面全体のレイアウト：左側にサイドバー、右側にメイン */
-        .setup-container {
-            display: flex;
-            height: 100%;
-            gap: 20px;
-        }
-
-        /* --- 左側：メンバーサイドバー --- */
-        .member-sidebar {
-            width: 250px;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            height: 100%;
-        }
-
-        .sidebar-title {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            font-weight: normal;
-        }
-
-        .member-ul {
-            list-style: none; /* 点を消す */
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .member-item {
-            padding: 8px 0;
-            font-size: 1.2rem;
-            border-bottom: 1px solid #ccc;
-        }
-
-        /* --- 右側：メインエリア --- */
-        .setup-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative; /* STARTボタンの配置基準 */
-        }
-
-        /* 上部：タイトル */
-        .page-header {
-            display: flex;
-            justify-content: center;
-            padding-top: 40px;
-        }
-
-        .title-box {
-            padding: 10px 60px;
-        }
-
-        .title-box h1 {
-            font-size: 3rem;
-            font-weight: normal;
-            letter-spacing: 0.2em;
-        }
-
-        /* 中央：登録エリア（入力欄とボタンを縦に並べる） */
-        .registration-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding-bottom: 80px; /* STARTボタンと重ならないための余白 */
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        #userNameInput {
-            width: 450px;
-            padding: 15px;
-            font-size: 1.3rem;
-            text-align: center;
-        }
-
-        .join-btn {
-            width: 120px;
-            padding: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            background-color: #eee;
-        }
-
-        .join-btn:hover {
-            background-color: #ddd;
-        }
-
-        /* 右下：STARTボタン */
-        .footer-area {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-        }
-
-        .start-btn {
-            display: block;
-            padding: 15px 50px;
-            font-size: 2.5rem;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .start-btn:hover {
-            background-color: #eee;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}">
 </head>
-<body>
-    <div class="setup-container">
-        <aside class="member-sidebar box-border">
-            <h2 class="sidebar-title">メンバー</h2>
-            <ul id="memberDisplayList" class="member-ul">
-                </ul>
-        </aside>
 
-        <main class="setup-main">
-            <header class="page-header">
-                <div class="title-box box-border">
-                    <h1>人生ゲーム</h1>
-                </div>
-            </header>
+<body class="setup-page">
+<div class="setup-container">
 
-            <div class="registration-area">
-                <div class="input-group">
-                    <input type="text" id="userNameInput" placeholder="名前を入力してください" class="box-border">
-                    <button onclick="addMember()" class="join-btn box-border">参加</button>
-                </div>
+    <aside class="member-sidebar box-border">
+        <h2 class="sidebar-title">メンバー</h2>
+        <ul id="memberDisplayList" class="member-ul"></ul>
+    </aside>
+
+    <main class="setup-main">
+        <header class="page-header">
+            <div class="title-box box-border">
+                <h1>人生ゲーム</h1>
             </div>
+        </header>
 
-            <div class="footer-area">
-                <a href="{{ url_for('game') }}" class="start-btn box-border">START</a>
+        <div class="registration-area">
+            <div class="input-group">
+                <input id="userNameInput" class="box-border" placeholder="名前を入力してください">
+                <button class="join-btn box-border" onclick="addMember()">参加</button>
             </div>
-        </main>
-    </div>
+        </div>
 
-    <script>
-        function addMember() {
-            const input = document.getElementById('userNameInput');
-            const list = document.getElementById('memberDisplayList');
-            const name = input.value.trim();
-
-            if (name !== "") {
-                const li = document.createElement('li');
-                li.textContent = "・ " + name; // 先頭に中黒をつける
-                li.className = "member-item";
-                list.appendChild(li);
-                input.value = "";
-                input.focus();
-            }
-        }
-
-        // Enterキー入力にも対応
-        document.getElementById('userNameInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                addMember();
-            }
-        });
-    </script>
+        <div class="footer-area">
+            <a href="game.html" class="start-btn box-border">START</a>
+        </div>
+    </main>
+</div>
 </body>
 </html>
