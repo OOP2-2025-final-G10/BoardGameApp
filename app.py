@@ -11,7 +11,7 @@ users = {}
 @app.route("/", methods=["GET"])
 def index():
     is_registered = "user_id" in session
-    return render_template("index.html", is_registered=is_registered)
+    return render_template("setup.html", is_registered=is_registered)
 
 #ユーザー参加処理
 @app.route("/", methods=["POST"])
