@@ -1,3 +1,4 @@
+from models import db
 from models.job import Job
 
 class User:
@@ -12,7 +13,7 @@ class User:
     @classmethod
     def from_row(cls, row):
         job = Job.from_name(row["job"]) if row["job"] else None
-    
+
         return cls(
             id=row["id"],
             spot_id=row["spot_id"],
@@ -20,17 +21,22 @@ class User:
             money=row["money"],
             job=job
         )
-
     
     def save(self, db):
         db.execute(
-            "UPDATE users SET money = ?, job = ? WHERE id = ?",
+            """
+            UPDATE users
+            SET money = ?, job = ?, spot_id = ?
+            WHERE id = ?
+            """,
             (
                 self.money,
                 self.job.name if self.job else None,
+                self.spot_id,
                 self.user_id
             )
         )
+
 
     def to_dict(self) -> dict:
         return {

@@ -1,7 +1,10 @@
 import uuid
-from flask import Flask, request, redirect, url_for, render_template, session
+from flask import Flask, request, redirect, url_for, render_template, session, Response
 from models.user import User
 from models.db import get_db
+from services.roulette_service import RouletteService
+from services.spot_event_service import SpotEventService
+from services.turn_service import TurnService
 
 app = Flask(__name__)
 app.secret_key = "secret_key"
@@ -23,22 +26,22 @@ def init_db():
     """)
 
     db.execute("""
-        INSERT OR REPLACE INTO game_state (
-            id, status,
-            turn_user_id,
-            turn_number
+        CREATE TABLE IF NOT EXISTS game_state (
+            id INTEGER PRIMARY KEY,
+            status TEXT NOT NULL,
+            turn_user_id TEXT,
+            turn_number INTEGER NOT NULL
         )
-        VALUES (1, 'waiting', NULL, 0)
     """)
 
     db.execute("""
-        INSERT OR IGNORE INTO game_state (id, status)
-        VALUES (1, 'waiting')
+        INSERT OR REPLACE INTO game_state
+        (id, status, turn_user_id, turn_number)
+        VALUES (1, 'waiting', NULL, 0)
     """)
 
     db.commit()
     db.close()
-
 
 init_db()
 
@@ -53,7 +56,12 @@ def reset_session():
     db.execute("DELETE FROM users")
     # game_state を初期状態に戻す（存在しなければ作る）
     db.execute("DELETE FROM game_state")
-    db.execute("INSERT OR REPLACE INTO game_state (id, status) VALUES (1, 'waiting')")
+    db.execute("""
+    INSERT OR REPLACE INTO game_state
+    (id, status, turn_user_id, turn_number)
+    VALUES (1, 'waiting', NULL, 0)
+""")
+
     db.commit()
     db.close()
 
@@ -128,8 +136,13 @@ def game():
         return redirect(url_for("index"))
 
     state_row = db.execute(
-        "SELECT status FROM game_state WHERE id = 1"
+        """
+        SELECT status, turn_user_id
+        FROM game_state
+        WHERE id = 1
+        """
     ).fetchone()
+
 
     is_my_turn = (state_row["turn_user_id"] == user_id)
 
@@ -204,6 +217,68 @@ def ready():
     db.close()
 
     return "", 204
+
+@app.route("/roulette/stream")
+def roulette_stream():
+    user_id = session.get("user_id")
+    if not user_id:
+        return "", 403
+
+    db = get_db()
+
+    state = db.execute("""
+        SELECT status, turn_user_id
+        FROM game_state
+        WHERE id = 1
+    """).fetchone()
+
+    if not state or state["status"] != "playing":
+        db.close()
+        return "", 403
+
+    if state["turn_user_id"] != user_id:
+        db.close()
+        return "", 403
+
+    user_row = db.execute(
+        "SELECT * FROM users WHERE id = ?",
+        (user_id,)
+    ).fetchone()
+
+    user = User.from_row(user_row)
+
+    def event_stream():
+        nonlocal user, db
+
+        for data in RouletteService.spin_stream():
+            # 回転中
+            if isinstance(data, float):
+                yield f"data:{data}\n\n"
+                continue
+
+            # 結果確定
+            if data.startswith("RESULT"):
+                step = int(data.split(":")[1])
+
+                # ① spot_id 更新
+                user.spot_id += step
+                user.save(db)
+
+                # ② マス目イベント処理
+                SpotEventService.handle(user, db)
+
+                # ③ 次プレイヤーへターン移動
+                TurnService.next_turn(db)
+
+                db.commit()
+                db.close()
+
+                yield f"data:{data}\n\n"
+                return
+
+    return Response(event_stream(), mimetype="text/event-stream")
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
