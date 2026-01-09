@@ -14,6 +14,7 @@ users = {}
 def init_db():
     db = get_db()
 
+    # users テーブルに holdings を含めた定義（新規作成時に使われる）
     db.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id TEXT PRIMARY KEY,
@@ -21,7 +22,8 @@ def init_db():
             money INTEGER NOT NULL,
             job TEXT,
             spot_id INTEGER NOT NULL DEFAULT 0,
-            is_ready INTEGER DEFAULT 0
+            is_ready INTEGER DEFAULT 0,
+            holdings TEXT DEFAULT '{}'
         )
     """)
 
@@ -34,6 +36,11 @@ def init_db():
         )
     """)
 
+    # 既存 DB に holdings カラムがなければ追加（安全対応）
+    cols = [c["name"] for c in db.execute("PRAGMA table_info(users)").fetchall()]
+    if "holdings" not in cols:
+        db.execute("ALTER TABLE users ADD COLUMN holdings TEXT DEFAULT '{}'")
+
     db.execute("""
         INSERT OR REPLACE INTO game_state
         (id, status, turn_user_id, turn_number)
@@ -42,6 +49,7 @@ def init_db():
 
     db.commit()
     db.close()
+
 
 init_db()
 
@@ -106,16 +114,17 @@ def join():
     db = get_db()
     db.execute(
         """
-        INSERT INTO users (id, name, money, job, spot_id)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO users (id, name, money, job, spot_id, holdings)
+        VALUES (?, ?, ?, ?, ?, ?)
         """,
-    (user_id, username, 50000, None, 0)
-)
+        (user_id, username, 50000, None, 0, "{}")
+    )
     db.commit()
     db.close()
 
     session["user_id"] = user_id
     return "", 204
+
 
 #ゲーム画面 未登録ユーザーであれば参加画面へリダイレクト
 @app.route("/game")
