@@ -1,37 +1,130 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>人生ゲーム - 参加登録</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>人生ゲーム - 参加登録</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}">
+    </head>
+    <body>
+        <div class="setup-container">
+            <aside class="member-sidebar box-border">
+                <h2 class="sidebar-title">メンバー</h2>
+                <ul id="memberDisplayList" class="member-ul">
+                    </ul>
+            </aside>
 
-<body class="setup-page">
-<div class="setup-container">
+            <main class="setup-main">
+                <header class="page-header">
+                    <div class="title-box box-border">
+                        <h1>人生ゲーム</h1>
+                    </div>
+                </header>
 
-    <aside class="member-sidebar box-border">
-        <h2 class="sidebar-title">メンバー</h2>
-        <ul id="memberDisplayList" class="member-ul"></ul>
-    </aside>
+                <div class="registration-area">
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="userNameInput"
+                            class="box-border"
+                            placeholder="名前を入力してください"
+                            value="{{ username if username else '' }}"
+                            {% if is_registered %}readonly{% endif %}>
+                        <button
+                            onclick="addMember()"
+                            class="join-btn box-border"
+                            id="joinBtn"
+                            {% if is_registered %}disabled{% endif %}>参加</button>
 
-    <main class="setup-main">
-        <header class="page-header">
-            <div class="title-box box-border">
-                <h1>人生ゲーム</h1>
-            </div>
-        </header>
+                    </div>
+                </div>
 
-        <div class="registration-area">
-            <div class="input-group">
-                <input id="userNameInput" class="box-border" placeholder="名前を入力してください">
-                <button class="join-btn box-border" onclick="addMember()">参加</button>
-            </div>
+                <div class="footer-area">
+                    <button onclick="pressStart()" class="start-btn box-border">START</button>
+
+                </div>
+            </main>
         </div>
 
-        <div class="footer-area">
-            <a href="game.html" class="start-btn box-border">START</a>
-        </div>
-    </main>
-</div>
-</body>
+        <script>
+            function updateMembers() {
+                fetch("/members")
+                    .then(res => res.json())
+                    .then(data => {
+                        const ul = document.getElementById("memberDisplayList");
+                        ul.innerHTML = "";
+                    
+                        data.members.forEach(member => {
+                            const li = document.createElement("li");
+                            li.className = "member-item";
+                        
+                            const statusText = member.ready ? "（準備済み）" : "（未準備）";
+                            li.textContent = member.name + " " + statusText;
+                        
+                            ul.appendChild(li);
+                        });
+                    
+                        if (data.status === "playing" && data.is_registered) {
+                            if (window.location.pathname !== "/game") {
+                                window.location.href = "/game";
+                            }
+                        }
+                    
+                        if (data.status === "playing" && !data.is_registered) {
+                            let warn = document.getElementById("playing-warning");
+                            if (!warn) {
+                                warn = document.createElement("div");
+                                warn.id = "playing-warning";
+                                warn.style.color = "#b00";
+                                warn.style.marginTop = "12px";
+                                warn.textContent = "ゲームは既に開始済みです。参加登録（参加ボタン）を行ってからゲーム画面に移動してください。";
+                                document.querySelector(".registration-area .input-group").appendChild(warn);
+                            }
+                        } else {
+                            const warn = document.getElementById("playing-warning");
+                            if (warn) warn.remove();
+                        }
+                    })
+                    .catch(err => {
+                        console.error("members update failed", err);
+                    });
+            }
+
+        
+            updateMembers();
+            setInterval(updateMembers, 1000);
+        
+            function addMember() {
+                const input = document.getElementById("userNameInput");
+                const btn = document.getElementById("joinBtn");
+            
+                const name = input.value.trim();
+                if (!name) return;
+            
+                input.readOnly = true;
+                btn.disabled = true;
+            
+                fetch("/", {
+                    method: "POST",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "username=" + encodeURIComponent(name)
+                }).then(() => {
+                    updateMembers();
+                }).catch(() => {
+                    input.readOnly = false;
+                    btn.disabled = false;
+                });
+            }
+        
+            function pressStart() {
+                fetch("/ready", {
+                    method: "POST",
+                    credentials: "same-origin"
+                });
+            }
+        </script>
+    </body>
 </html>

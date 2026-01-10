@@ -7,44 +7,175 @@
 </head>
 
 <body class="game-page">
-<div class="game-container">
+    <div class="game-container">
 
-    <div class="game-main">
-        <div class="map-area box-border">
-            マップ
-            <div class="zoom-btns">
-                <button>+</button>
-                <button>-</button>
+        <div class="game-main">
+            <div class="map-area box-border">
+                マップ
+                <div class="zoom-btns">
+                    <button>+</button>
+                    <button>-</button>
+                </div>
+            </div>
+
+            <div class="bottom-area">
+                <div class="roulette-container box-border">
+                        <div class="roulette-wrapper">
+                            <img
+                                id="roulette"
+                                src="{{ url_for('static', filename='roulette.png') }}"
+                                alt="roulette"
+                            >
+                            <div class="roulette-pointer"></div>
+                        </div>
+                    <button
+                        id="spinBtn"
+                        class="roulette-circle {% if not is_my_turn %}disabled{% endif %}"
+                        {% if not is_my_turn %}disabled{% endif %}
+                        data-is-my-turn="{{ 1 if is_my_turn else 0 }}"
+                    >
+                        まわす
+                    </button>
+
+                </div>
+                <div class="game-logo box-border">人生ゲーム</div>
             </div>
         </div>
 
-        <div class="bottom-area">
-            <div class="roulette-container box-border">
-                <button class="roulette-circle">まわす</button>
-            </div>
-            <div class="game-logo box-border">人生ゲーム</div>
-        </div>
-    </div>
-
-    <aside class="info-sidebar box-border">
-        <details>
-            <summary>ユーザー</summary>
-            <ul>
-                <li><button type="button" class="user-link" data-id="101">田中 太郎</button></li>
-                <li><button type="button" class="user-link" data-id="102">佐藤 花子</button></li>
+        <aside class="info-sidebar box-border">
+            <details>
+                <summary>ユーザー</summary>
+                <ul id="userList"></ul>
+            </details>
+            <ul class="status-info">
+                <li>ユーザー：</li>
+                <li>・ ゴールまでの距離：</li>
+                <li>・ 職業：</li>
+                <li>・ 所持金：</li>
+                <li>・ 配偶者の有無：</li>
+                <li>・ 子供の数：</li>
+                <li>・ 持ち会社：</li>
             </ul>
-        </details>
-        <ul class="status-info">
-            <li>・ ゴールまでの距離：</li>
-            <li>・ 職業：</li>
-            <li>・ 所持金：</li>
-            <li>・ 配偶者の有無：</li>
-            <li>・ 子供の数：</li>
-            <li>・ 持ち会社：</li>
-        </ul>
-    </aside>
+        </aside>
+    </div>
+        <script>
+    
+        const wheel = document.getElementById("roulette");
+        const btn = document.getElementById("spinBtn");
+
+        let myUserId = "{{ user.user_id }}";
+        let isMyTurn = btn.dataset.isMyTurn === "1";
+        let isSpinning = false;
+        let currentViewingUserId = null;
+
+        const userList = document.getElementById("userList");
+        const statusItems = document.querySelectorAll(".status-info li");
+
+        function setButtonEnabled(enabled) {
+            btn.disabled = !enabled;
+            btn.classList.toggle("disabled", !enabled);
+        }
+
+        setButtonEnabled(isMyTurn);
+        
+        btn.onclick = () => {
+            if (isSpinning) return;
+
+            isSpinning = true;
+            updateSpinButton(false);
+
+            const es = new EventSource("/roulette/stream");
+
+            es.onmessage = (e) => {
+                if (e.data.startsWith("RESULT")) {
+                    es.close();
+                    isSpinning = false;
+                
+                    syncCurrentUserStatus(); // ★ここで即同期
+                    return;
+                }
+            
+                wheel.style.transform = `rotate(${parseFloat(e.data)}deg)`;
+            };
+        };
 
 
-</div>
-</body>
+        function loadUsers() {
+            fetch("/api/users")
+                .then(res => res.json())
+                .then(data => {
+                    userList.innerHTML = "";
+                    data.users.forEach(u => {
+                        const li = document.createElement("li");
+                        const btn = document.createElement("button");
+                        btn.textContent = u.name;
+                        btn.className = "user-link";
+                        btn.onclick = () => loadUserStatus(u.id);
+                        li.appendChild(btn);
+                        userList.appendChild(li);
+                    });
+                });
+        }
+
+        // 3秒ごとに同期
+        setInterval(loadUsers, 3000);
+        loadUsers();
+
+        async function syncTurn() {
+            const res = await fetch("/api/game_state");
+            const state = await res.json();
+
+            const nowMyTurn = state.turn_user_id === myUserId;
+            updateSpinButton(nowMyTurn);
+        }
+
+        syncTurn();
+        setInterval(syncTurn, 2000);
+
+        function updateSpinButton(serverSaysMyTurn) {
+            const enabled = serverSaysMyTurn && !isSpinning;
+            btn.disabled = !enabled;
+            btn.classList.toggle("disabled", !enabled);
+        }
+
+        updateSpinButton(isMyTurn);
+
+        function loadUserStatus(userId) {
+            currentViewingUserId = userId;
+
+            fetch(`/api/user/${userId}`)
+                .then(res => res.json())
+                .then(user => renderUserStatus(user));
+        }
+
+
+        function renderUserStatus(user) {
+            statusItems[0].textContent = `ユーザー：${user.name}`;
+            statusItems[1].textContent = `・ ゴールまでの距離：${user.spot_id}`;
+            statusItems[2].textContent = `・ 職業：${user.job?.name ?? "なし"}`;
+            statusItems[3].textContent = `・ 所持金：${user.money}`;
+            statusItems[4].textContent = `・ 配偶者の有無：未実装`;
+            statusItems[5].textContent = `・ 子供の数：未実装`;
+            statusItems[6].textContent = `・ 持ち会社：未実装`;
+        }
+
+        function syncCurrentUserStatus() {
+            if (!currentViewingUserId) return;
+
+            fetch(`/api/user/${currentViewingUserId}`)
+                .then(res => res.json())
+                .then(user => {
+                    renderUserStatus(user);
+                });
+        }
+
+        setInterval(syncCurrentUserStatus, 2000);
+
+        window.addEventListener("load", () => {
+            currentViewingUserId = myUserId;
+            loadUserStatus(myUserId);
+        });
+
+        </script>
+    </body>
 </html>

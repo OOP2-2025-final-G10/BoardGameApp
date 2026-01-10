@@ -1,17 +1,103 @@
 import uuid
-from flask import Flask, request, redirect, url_for, render_template, session
+from flask import Flask, request, redirect, url_for, render_template, session, Response
 from models.user import User
+from models.db import get_db
+from services.roulette_service import RouletteService
+from services.spot_event_service import SpotEventService
+from services.turn_service import TurnService
 
 app = Flask(__name__)
 app.secret_key = "secret_key"
 
 users = {}
 
+def init_db():
+    db = get_db()
+
+    # users テーブルに holdings を含めた定義（新規作成時に使われる）
+    db.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            money INTEGER NOT NULL,
+            job TEXT,
+            spot_id INTEGER NOT NULL DEFAULT 0,
+            is_ready INTEGER DEFAULT 0,
+            holdings TEXT DEFAULT '{}'
+        )
+    """)
+
+    db.execute("""
+        CREATE TABLE IF NOT EXISTS game_state (
+            id INTEGER PRIMARY KEY,
+            status TEXT NOT NULL,
+            turn_user_id TEXT,
+            turn_number INTEGER NOT NULL
+        )
+    """)
+
+    # 既存 DB に holdings カラムがなければ追加（安全対応）
+    cols = [c["name"] for c in db.execute("PRAGMA table_info(users)").fetchall()]
+    if "holdings" not in cols:
+        db.execute("ALTER TABLE users ADD COLUMN holdings TEXT DEFAULT '{}'")
+
+    db.execute("""
+        INSERT OR REPLACE INTO game_state
+        (id, status, turn_user_id, turn_number)
+        VALUES (1, 'waiting', NULL, 0)
+    """)
+
+    db.commit()
+    db.close()
+
+
+init_db()
+
+#セッションリセット用
+@app.route("/reset")
+def reset_session():
+    # セッション（このクライアントの cookie）をクリア
+    session.clear()
+
+    # DB のリセット：users を削除し、game_state を初期状態に戻す
+    db = get_db()
+    db.execute("DELETE FROM users")
+    # game_state を初期状態に戻す（存在しなければ作る）
+    db.execute("DELETE FROM game_state")
+    db.execute("""
+    INSERT OR REPLACE INTO game_state
+    (id, status, turn_user_id, turn_number)
+    VALUES (1, 'waiting', NULL, 0)
+""")
+
+    db.commit()
+    db.close()
+
+    return redirect("/")
+
+
 #参加画面
 @app.route("/", methods=["GET"])
 def index():
     is_registered = "user_id" in session
-    return render_template("setup.html", is_registered=is_registered)
+    username = None
+
+    if is_registered:
+        db = get_db()
+        user = db.execute(
+            "SELECT name FROM users WHERE id = ?",
+            (session["user_id"],)
+        ).fetchone()
+        db.close()
+        if user:
+            username = user["name"]
+
+    return render_template(
+        "setup.html",
+        is_registered=is_registered,
+        username=username
+    )
+
 
 #ユーザー参加処理
 @app.route("/", methods=["POST"])
@@ -24,29 +110,237 @@ def join():
         return "", 400
 
     user_id = str(uuid.uuid4())
-    user = User(
-        id=user_id,
-        name=username,
-        money=50000,
-        holdings={},
-        job=None
+
+    db = get_db()
+    db.execute(
+        """
+        INSERT INTO users (id, name, money, job, spot_id, holdings)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """,
+        (user_id, username, 50000, None, 0, "{}")
     )
+    db.commit()
+    db.close()
 
-    users[user_id] = user
     session["user_id"] = user_id
-
     return "", 204
+
 
 #ゲーム画面 未登録ユーザーであれば参加画面へリダイレクト
 @app.route("/game")
 def game():
     user_id = session.get("user_id")
-
-    if not user_id or user_id not in users:
+    if not user_id:
         return redirect(url_for("index"))
 
-    user = users[user_id]
-    return render_template("game.html", user=user)
+    db = get_db()
+
+    user_row = db.execute(
+        "SELECT * FROM users WHERE id = ?",
+        (user_id,)
+    ).fetchone()
+
+    if not user_row:
+        session.clear()
+        db.close()
+        return redirect(url_for("index"))
+
+    state_row = db.execute(
+        """
+        SELECT status, turn_user_id
+        FROM game_state
+        WHERE id = 1
+        """
+    ).fetchone()
+
+
+    is_my_turn = (state_row["turn_user_id"] == user_id)
+
+    db.close()
+
+    if not state_row or state_row["status"] != "playing":
+        return redirect(url_for("index"))
+
+    user = User.from_row(user_row)
+    return render_template("game.html", user=user, is_my_turn=is_my_turn)
+
+
+
+
+@app.route("/members")
+def members():
+    db = get_db()
+    users = db.execute("SELECT name, is_ready FROM users").fetchall()
+    state_row = db.execute("SELECT status FROM game_state WHERE id = 1").fetchone()
+    db.close()
+
+    status = state_row["status"] if state_row else "waiting"
+
+    # セッションに user_id があるかで登録済み判定を返す
+    is_registered = "user_id" in session and session.get("user_id") is not None
+
+    return {
+        "members": [
+            {"name": u["name"], "ready": bool(u["is_ready"])}
+            for u in users
+        ],
+        "status": status,
+        "is_registered": bool(is_registered)
+    }
+
+
+
+@app.route("/ready", methods=["POST"])
+def ready():
+    user_id = session.get("user_id")
+    if not user_id:
+        return "", 403
+
+    db = get_db()
+
+    # 自分を ready にする
+    db.execute(
+        "UPDATE users SET is_ready = 1 WHERE id = ?",
+        (user_id,)
+    )
+
+    # 全員が ready か確認
+    total = db.execute("SELECT COUNT(*) FROM users").fetchone()[0]
+    ready = db.execute(
+        "SELECT COUNT(*) FROM users WHERE is_ready = 1"
+    ).fetchone()[0]
+
+    if total > 0 and total == ready:
+        first_user = db.execute(
+            "SELECT id FROM users ORDER BY rowid ASC LIMIT 1"
+        ).fetchone()
+
+        db.execute("""
+            UPDATE game_state
+            SET status = 'playing',
+                turn_user_id = ?,
+                turn_number = 1
+            WHERE id = 1
+        """, (first_user["id"],))
+
+    db.commit()
+    db.close()
+
+    return "", 204
+
+@app.route("/roulette/stream")
+def roulette_stream():
+    user_id = session.get("user_id")
+    if not user_id:
+        return "", 403
+
+    db = get_db()
+
+    state = db.execute("""
+        SELECT status, turn_user_id
+        FROM game_state
+        WHERE id = 1
+    """).fetchone()
+
+    if not state or state["status"] != "playing":
+        db.close()
+        return "", 403
+
+    if state["turn_user_id"] != user_id:
+        db.close()
+        return "", 403
+
+    user_row = db.execute(
+        "SELECT * FROM users WHERE id = ?",
+        (user_id,)
+    ).fetchone()
+
+    user = User.from_row(user_row)
+
+    def event_stream():
+        try:
+            for data in RouletteService.spin_stream():
+                if isinstance(data, float):
+                    yield f"data:{data}\n\n"
+                    continue
+
+                # RESULT
+                step = int(data.split(":")[1])
+
+                # ① 移動
+                user.spot_id += step
+
+                # ② マス目イベント
+                SpotEventService.handle(user, db)
+
+                # ③ ターン移動
+                TurnService.next_turn(db)
+
+                user.save(db)
+                db.commit()
+
+                yield f"data:{data}\n\n"
+                return
+        finally:
+            db.close()
+
+    return Response(event_stream(), mimetype="text/event-stream")
+
+@app.route("/api/users")
+def api_users():
+    db = get_db()
+    rows = db.execute("""
+        SELECT id, name, spot_id
+        FROM users
+        ORDER BY rowid ASC
+    """).fetchall()
+    db.close()
+
+    return {
+        "users": [
+            {
+                "id": r["id"],
+                "name": r["name"],
+                "spot_id": r["spot_id"]
+            }
+            for r in rows
+        ]
+    }
+
+@app.route("/api/user/<user_id>")
+def api_user_detail(user_id):
+    db = get_db()
+    row = db.execute(
+        "SELECT * FROM users WHERE id = ?",
+        (user_id,)
+    ).fetchone()
+    db.close()
+
+    if not row:
+        return {"error": "not found"}, 404
+
+    user = User.from_row(row)
+    return user.to_dict()
+
+@app.route("/api/game_state")
+def api_game_state():
+    db = get_db()
+    row = db.execute("""
+        SELECT status, turn_user_id, turn_number
+        FROM game_state
+        WHERE id = 1
+    """).fetchone()
+    db.close()
+
+    if not row:
+        return {"error": "game_state not found"}, 404
+
+    return {
+        "status": row["status"],
+        "turn_user_id": row["turn_user_id"],
+        "turn_number": row["turn_number"]
+    }
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
