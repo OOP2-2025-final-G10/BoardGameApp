@@ -21,7 +21,6 @@ class User:
 
     @classmethod
     def from_row(cls, row):
-        # sqlite3.Row は dict.get を持たないので安全に取得する
         try:
             raw = row["holdings"]  # カラムがあれば値（TEXT または None）が返る
         except KeyError:
@@ -64,6 +63,23 @@ class User:
                 self.user_id
             )
         )
+    
+    @staticmethod
+    def get_by_id(db, user_id: str):
+        row = db.execute(
+            """
+            SELECT *
+            FROM users
+            WHERE id = ?
+            """,
+            (user_id,)
+        ).fetchone()
+    
+        if not row:
+            return None
+    
+        return User.from_row(row)
+
 
     def to_dict(self):
         return {

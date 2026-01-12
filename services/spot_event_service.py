@@ -1,3 +1,5 @@
+from services.event import UserEvent
+
 class SpotEventService:
 
     @staticmethod
@@ -7,7 +9,7 @@ class SpotEventService:
         """
         spot = user.spot_id
 
-        #マス目ごとのイベント定義
-        user.money += 10000
+        #↓マス目ごとのイベント定義
+
 
         user.save(db)

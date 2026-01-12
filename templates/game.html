@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <title>人生ゲーム - プレイ</title>
-   <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}">
 </head>
 
 <body class="game-page">
@@ -20,20 +21,12 @@
 
             <div class="bottom-area">
                 <div class="roulette-container box-border">
-                        <div class="roulette-wrapper">
-                            <img
-                                id="roulette"
-                                src="{{ url_for('static', filename='roulette.png') }}"
-                                alt="roulette"
-                            >
-                            <div class="roulette-pointer"></div>
-                        </div>
-                    <button
-                        id="spinBtn"
-                        class="roulette-circle {% if not is_my_turn %}disabled{% endif %}"
-                        {% if not is_my_turn %}disabled{% endif %}
-                        data-is-my-turn="{{ 1 if is_my_turn else 0 }}"
-                    >
+                    <div class="roulette-wrapper">
+                        <img id="roulette" src="{{ url_for('static', filename='roulette.png') }}" alt="roulette">
+                        <div class="roulette-pointer"></div>
+                    </div>
+                    <button id="spinBtn" class="roulette-circle {% if not is_my_turn %}disabled{% endif %}" {% if not
+                        is_my_turn %}disabled{% endif %} data-is-my-turn="{{ 1 if is_my_turn else 0 }}">
                         まわす
                     </button>
 
@@ -45,10 +38,30 @@
         <aside class="info-sidebar box-border">
             <details>
                 <summary>ユーザー</summary>
-                <ul>
-                    <ul id="userList"></ul>
-                </ul>
+                <ul id="userList"></ul>
             </details>
+            <details>
+                <summary>株式売買</summary>
+                <p>購入、または売却したい銘柄と数量を指定してください。売却の際に-1を入力すると全株を売却できます。</p>
+                <select id="stockName">
+                    <option value="STOCK_A">STOCK_A</option>
+                    <option value="STOCK_B">STOCK_B</option>
+                    <option value="STOCK_C">STOCK_C</option>
+                    <option value="STOCK_D">STOCK_D</option>
+                    <option value="STOCK_E">STOCK_E</option>
+                </select>
+                <input type="number" id="stockAmount" value="1" min="1">
+                <button onclick="buyStock()">購入</button>
+                <button onclick="sellStock()">売却</button>
+                <div id="tradeResult"></div>
+            </details>
+            <details>
+                <div class="box-border">
+                    <h3>株価推移</h3>
+                    <canvas id="stockChart" width="400" height="200"></canvas>
+                </div>
+            </details>
+
             <ul class="status-info">
                 <li>ユーザー：</li>
                 <li>・ ゴールまでの距離：</li>
@@ -56,12 +69,12 @@
                 <li>・ 所持金：</li>
                 <li>・ 配偶者の有無：</li>
                 <li>・ 子供の数：</li>
-                <li>・ 持ち会社：</li>
+                <li>・ 持ち株：</li>
             </ul>
         </aside>
     </div>
-        <script>
-    
+    <script>
+
         const wheel = document.getElementById("roulette");
         const btn = document.getElementById("spinBtn");
 
@@ -74,7 +87,7 @@
         const statusItems = document.querySelectorAll(".status-info li");
 
         updateSpinButton(isMyTurn);
-        
+
         btn.onclick = () => {
             if (isSpinning) return;
 
@@ -87,11 +100,11 @@
                 if (e.data.startsWith("RESULT")) {
                     es.close();
                     isSpinning = false;
-                
+
                     syncCurrentUserStatus();
                     return;
                 }
-            
+
                 wheel.style.transform = `rotate(${parseFloat(e.data)}deg)`;
             };
         };
@@ -147,14 +160,22 @@
 
 
         function renderUserStatus(user) {
-            statusItems[0].textContent = `ユーザー：${user.name}`;
             statusItems[1].textContent = `・ ゴールまでの距離：${user.spot_id}`;
+            statusItems[0].textContent = `ユーザー：${user.name}`;
             statusItems[2].textContent = `・ 職業：${user.job?.name ?? "なし"}`;
             statusItems[3].textContent = `・ 所持金：${user.money}`;
-            statusItems[4].textContent = `・ 配偶者の有無：未実装`;
-            statusItems[5].textContent = `・ 子供の数：未実装`;
-            statusItems[6].textContent = `・ 持ち会社：未実装`;
+            const holdings = user.holdings || {};
+
+            if (Object.keys(holdings).length === 0) {
+                statusItems[6].textContent = `・ 持ち株：なし`;
+            } else {
+                const list = Object.entries(holdings)
+                    .map(([name, qty]) => `${name} ×${qty}`)
+                    .join(" / ");
+                statusItems[6].textContent = `・ 持ち株：${list}`;
+            }
         }
+
 
         function syncCurrentUserStatus() {
             if (!currentViewingUserId) return;
@@ -173,6 +194,103 @@
             loadUserStatus(myUserId);
         });
 
-        </script>
-    </body>
+        function buyStock() {
+            const stock = document.getElementById("stockName").value;
+            const amount = document.getElementById("stockAmount").value;
+
+            fetch("/api/stock/buy", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    stock_name: stock,
+                    amount: amount
+                })
+            })
+
+                .then(res => res.json())
+                .then(result => {
+                    document.getElementById("tradeResult").textContent =
+                        result.purchased
+                            ? `購入成功：${result.symbol} ×${result.qty}`
+                            : `失敗：${result.reason}`;
+                    syncCurrentUserStatus();
+                });
+        }
+
+        function sellStock() {
+            const stock = document.getElementById("stockName").value;
+            const amount = document.getElementById("stockAmount").value;
+
+            fetch("/api/stock/sell", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    stock_name: stock,
+                    amount: amount
+                })
+            })
+
+                .then(res => res.json())
+                .then(result => {
+                    document.getElementById("tradeResult").textContent =
+                        result.sold
+                            ? `売却成功：${result.symbol} ×${result.qty}`
+                            : `失敗：${result.reason}`;
+                    syncCurrentUserStatus();
+                });
+        }
+
+        let stockChart = null;
+
+        async function loadStockChart() {
+            const res = await fetch("/api/stock/prices");
+            const data = await res.json();
+
+            const ctx = document.getElementById("stockChart").getContext("2d");
+
+            const datasets = Object.entries(data.prices).map(([name, prices]) => ({
+                label: name,
+                data: prices,
+                borderWidth: 2,
+                tension: 0.3
+            }));
+
+            if (stockChart) {
+                stockChart.data.labels = data.days;
+                stockChart.data.datasets = datasets;
+                stockChart.update();
+                return;
+            }
+
+            stockChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: data.days,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    animation: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "日数"
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "株価"
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        setInterval(loadStockChart, 2000);
+        loadStockChart();
+    </script>
+</body>
+
 </html>

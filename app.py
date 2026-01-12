@@ -1,10 +1,14 @@
 import uuid
+import json
+from services.event import UserEvent
+from services.stock_price_service import generate_stock_prices
 from flask import Flask, request, redirect, url_for, render_template, session, Response
 from models.user import User
 from models.db import get_db
 from services.roulette_service import RouletteService
 from services.spot_event_service import SpotEventService
 from services.turn_service import TurnService
+from flask import jsonify
 
 app = Flask(__name__)
 app.secret_key = "secret_key"
@@ -14,9 +18,11 @@ users = {}
 def init_db():
     db = get_db()
 
-    # users テーブルに holdings を含めた定義（新規作成時に使われる）
+    db.execute("DROP TABLE IF EXISTS users")
+    db.execute("DROP TABLE IF EXISTS game_state")
+
     db.execute("""
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE users (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,
             money INTEGER NOT NULL,
@@ -28,23 +34,19 @@ def init_db():
     """)
 
     db.execute("""
-        CREATE TABLE IF NOT EXISTS game_state (
+        CREATE TABLE game_state (
             id INTEGER PRIMARY KEY,
             status TEXT NOT NULL,
             turn_user_id TEXT,
-            turn_number INTEGER NOT NULL
+            turn_number INTEGER NOT NULL,
+            daily_prices TEXT
         )
     """)
 
-    # 既存 DB に holdings カラムがなければ追加（安全対応）
-    cols = [c["name"] for c in db.execute("PRAGMA table_info(users)").fetchall()]
-    if "holdings" not in cols:
-        db.execute("ALTER TABLE users ADD COLUMN holdings TEXT DEFAULT '{}'")
-
     db.execute("""
-        INSERT OR REPLACE INTO game_state
-        (id, status, turn_user_id, turn_number)
-        VALUES (1, 'waiting', NULL, 0)
+        INSERT INTO game_state
+        (id, status, turn_user_id, turn_number, daily_prices)
+        VALUES (1, 'waiting', NULL, 0, NULL)
     """)
 
     db.commit()
@@ -91,6 +93,7 @@ def index():
         db.close()
         if user:
             username = user["name"]
+            return redirect(url_for("game"))
 
     return render_template(
         "setup.html",
@@ -215,13 +218,17 @@ def ready():
             "SELECT id FROM users ORDER BY rowid ASC LIMIT 1"
         ).fetchone()
 
+        daily_prices = generate_stock_prices(T=180)
+        daily_prices_json = json.dumps(daily_prices)
+
         db.execute("""
             UPDATE game_state
             SET status = 'playing',
                 turn_user_id = ?,
-                turn_number = 1
+                turn_number = 1,
+                daily_prices = ?
             WHERE id = 1
-        """, (first_user["id"],))
+        """, (first_user["id"], daily_prices_json))
 
     db.commit()
     db.close()
@@ -237,7 +244,7 @@ def roulette_stream():
     db = get_db()
 
     state = db.execute("""
-        SELECT status, turn_user_id
+        SELECT status, turn_user_id, daily_prices
         FROM game_state
         WHERE id = 1
     """).fetchone()
@@ -258,32 +265,33 @@ def roulette_stream():
     user = User.from_row(user_row)
 
     def event_stream():
-        try:
-            for data in RouletteService.spin_stream():
-                if isinstance(data, float):
-                    yield f"data:{data}\n\n"
-                    continue
+        for data in RouletteService.spin_stream():
+            if isinstance(data, float):
+                yield f"data:{data}\n\n"
+                continue
 
-                # RESULT
-                step = int(data.split(":")[1])
+            step = int(data.split(":")[1])
 
-                # ① 移動
+            db = get_db()
+            try:
+                user_row = db.execute(
+                    "SELECT * FROM users WHERE id = ?",
+                    (user_id,)
+                ).fetchone()
+
+                user = User.from_row(user_row)
                 user.spot_id += step
 
-                # ② マス目イベント
                 SpotEventService.handle(user, db)
-
-                # ③ ターン移動
                 TurnService.next_turn(db)
 
                 user.save(db)
                 db.commit()
+            finally:
+                db.close()
 
-                yield f"data:{data}\n\n"
-                return
-        finally:
-            db.close()
-
+            yield f"data:{data}\n\n"
+            return
     return Response(event_stream(), mimetype="text/event-stream")
 
 @app.route("/api/users")
@@ -341,6 +349,64 @@ def api_game_state():
         "turn_number": row["turn_number"]
     }
 
+@app.post("/api/stock/buy")
+def buy_stock():
+    user_id = session.get("user_id")
+    if not user_id:
+        return {"error": "unauthorized"}, 403
+
+    db = get_db()
+    data = request.json
+
+    user = User.get_by_id(db, user_id)
+
+    result = UserEvent.buy_stock(
+        user=user,
+        stock_name=data["stock_name"],
+        amount=int(data["amount"]),
+        db=db
+    )
+
+    user.save(db)
+    db.commit()
+    db.close()
+
+    return jsonify(result)
+
+
+@app.post("/api/stock/sell")
+def sell_stock():
+    user_id = session.get("user_id")
+    if not user_id:
+        return {"error": "unauthorized"}, 403
+
+    db = get_db()
+    data = request.json
+
+    user = User.get_by_id(db, user_id)
+
+    result = UserEvent.sell_stock(
+        user=user,
+        stock_name=data["stock_name"],
+        amount=int(data["amount"]),
+        db=db
+    )
+
+    user.save(db)
+    db.commit()
+    db.close()
+
+    return jsonify(result)
+
+def get_daily_prices(db):
+    row = db.execute("""
+        SELECT daily_prices
+        FROM game_state
+        WHERE id = 1
+    """).fetchone()
+    if not row or not row["daily_prices"]:
+        return None
+    return json.loads(row["daily_prices"])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
