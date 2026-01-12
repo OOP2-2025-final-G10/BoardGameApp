@@ -73,12 +73,7 @@
         const userList = document.getElementById("userList");
         const statusItems = document.querySelectorAll(".status-info li");
 
-        function setButtonEnabled(enabled) {
-            btn.disabled = !enabled;
-            btn.classList.toggle("disabled", !enabled);
-        }
-
-        setButtonEnabled(isMyTurn);
+        updateSpinButton(isMyTurn);
         
         btn.onclick = () => {
             if (isSpinning) return;
@@ -93,7 +88,7 @@
                     es.close();
                     isSpinning = false;
                 
-                    syncCurrentUserStatus(); // ★ここで即同期
+                    syncCurrentUserStatus();
                     return;
                 }
             
