@@ -15,3 +15,5 @@ CREATE TABLE IF NOT EXISTS game_state (
 );
 
 ALTER TABLE users ADD COLUMN is_ready INTEGER DEFAULT 0;
+
+ALTER TABLE game_state ADD COLUMN daily_prices TEXT;

@@ -9,6 +9,23 @@ def generate_stock_prices(T: int):
 
     stock_names = ["STOCK_A", "STOCK_B", "STOCK_C", "STOCK_D", "STOCK_E"]
 
+    price_base = {
+        "STOCK_A": np.random.uniform(0, 10000),
+        "STOCK_B": np.random.uniform(10000, 20000),
+        "STOCK_C": np.random.uniform(0, 2000),
+        "STOCK_D": np.random.uniform(3000, 6000),
+        "STOCK_E": np.random.uniform(2000, 7000)
+    }
+
+    price_multipliers = {
+        "STOCK_A": price_base["STOCK_A"] / 1000,
+        "STOCK_B": price_base["STOCK_B"] / 1000,
+        "STOCK_C": price_base["STOCK_C"] / 1000,
+        "STOCK_D": price_base["STOCK_D"] / 1000,
+        "STOCK_E": price_base["STOCK_E"] / 1000
+    }
+
+
     while True:
         assets = {
             name: {
@@ -119,6 +136,9 @@ def generate_stock_prices(T: int):
     plt.show()
     
     """
+
+    for name in stock_names:
+        prices[name] = prices[name] * price_multipliers[name] + price_base[name]
 
     daily_prices: list[list[float]] = []
 
