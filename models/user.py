@@ -10,13 +10,15 @@ class User:
         name: str,
         money: int,
         job: Job | None,
-        holdings: dict[str, int] | None = None
+        holdings: dict[str, int] | None = None,
+        last_salary: int = 0
     ):
         self.user_id = id
         self.spot_id = spot_id
         self.name = name
         self.money = money
         self.job = job
+        self.last_salary = last_salary  # 前回の給料額を保持するフィールド
         self.holdings = holdings or {}
 
     @classmethod
@@ -88,5 +90,6 @@ class User:
             "money": self.money,
             "spot_id": self.spot_id,
             "job": self.job.to_dict() if self.job else None,
-            "holdings": self.holdings
+            "holdings": self.holdings,
+            "last_salary": self.last_salary
         }

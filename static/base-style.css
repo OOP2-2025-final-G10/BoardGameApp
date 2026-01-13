@@ -29,7 +29,6 @@ body {
 }
 
 /* ===== setup.html 用 ===== */
-
 .setup-container {
     display: flex;
     height: 100%;
@@ -121,7 +120,6 @@ body {
 }
 
 /* ===== game.html 用 ===== */
-
 .game-container {
     display: flex;
     width: 100%;
@@ -136,28 +134,40 @@ body {
     gap: 15px;
 }
 
+/* マップエリア：内側の線を隠し、枠の中にボタンを収める */
 .map-area {
     flex: 2.5;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
     position: relative;
+    overflow: hidden; /* はみ出た画像を隠す */
+
+    /* 背景画像設定 */
+    background-image: url('BoardGame_map.png');
+    background-size: 100% 100%; 
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #fff;
+    height: 100%;
 }
 
 .zoom-btns {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 20px;
+    right: 30px;
+    z-index: 10;
 }
 
 .zoom-btns button {
     width: 35px;
     height: 35px;
+    font-size: 1.5rem;   
+    font-weight: bold;
     border-radius: 50%;
     border: 2px solid #333;
     margin-bottom: 5px;
     cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .bottom-area {
@@ -180,6 +190,7 @@ body {
     border: 2px solid #333;
     font-size: 1.2rem;
     cursor: pointer;
+    background-color: #fff;
 }
 
 .game-logo {
@@ -194,13 +205,6 @@ body {
 .info-sidebar {
     flex: 1;
     padding: 20px;
-}
-
-.user-pill {
-    border: 2px solid #333;
-    padding: 5px 15px;
-    width: fit-content;
-    font-weight: bold;
 }
 
 .status-info {
@@ -246,3 +250,12 @@ body {
     transition: opacity 0.3s;
 }
 
+.user-link {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #333;
+    text-decoration: underline;
+    margin-bottom: 5px;
+}
