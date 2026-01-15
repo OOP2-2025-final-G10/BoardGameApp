@@ -1,5 +1,6 @@
 import uuid
 import json
+from models import user
 from services.event import UserEvent
 from services.stock_price_service import generate_stock_prices
 from flask import Flask, request, redirect, url_for, render_template, session, Response
@@ -282,9 +283,12 @@ def roulette_result():
         step = RouletteService.consume_result()
 
         user = User.get_by_id(db, user_id)
+        spot_id_before = user.spot_id
+
+        SpotEventService.handle(user, spot_id_before, db)
+
         user.spot_id += step
 
-        SpotEventService.handle(user, db)
         user.save(db)
 
         TurnService.next_turn(db)

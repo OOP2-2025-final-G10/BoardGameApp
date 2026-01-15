@@ -523,8 +523,15 @@
     <script id="users-data" type="application/json">{{ users|tojson }}</script>
 
     <script>
+       
         const wheel = document.getElementById("roulette");
         const btn = document.getElementById("spinBtn");
+
+        let myUserId = "{{ user.user_id }}";
+        let isMyTurn = btn.dataset.isMyTurn === "1";
+        let isSpinning = false;
+        let currentViewingUserId = null;
+
         const userList = document.getElementById("userList");
         const statusItems = document.querySelectorAll(".status-info li");
 
@@ -565,10 +572,8 @@
             };
         };
 
-        // データの取得と初期化
-        let myUserId = "{{ user.user_id if user else '' }}";
-        let isSpinning = false;
-        let currentViewingUserId = myUserId;
+
+
         function loadUsers() {
             fetch("/api/users")
                 .then(res => res.json())
@@ -576,14 +581,14 @@
                     userList.innerHTML = "";
                     data.users.forEach(u => {
                         const li = document.createElement("li");
-                        const uBtn = document.createElement("button");
-                        uBtn.textContent = u.name;
-                        uBtn.className = "user-link";
-                        uBtn.onclick = () => loadUserStatus(u.id);
-                        li.appendChild(uBtn);
+                        const btn = document.createElement("button");
+                        btn.textContent = u.name;
+                        btn.className = "user-link";
+                        btn.onclick = () => loadUserStatus(u.user_id);
+                        li.appendChild(btn);
                         userList.appendChild(li);
                     });
-                }).catch(err => console.error("データ取得エラー:", err));
+                });
         }
 
 
@@ -612,6 +617,7 @@
 
         function loadUserStatus(userId) {
             currentViewingUserId = userId;
+
             fetch(`/api/user/${userId}`)
                 .then(res => res.json())
                 .then(user => renderUserStatus(user));
@@ -642,27 +648,11 @@
             fetch(`/api/user/${currentViewingUserId}`)
                 .then(res => res.json())
                 .then(user => {
-                    document.getElementById('stat-name').textContent = user.name;
-                    document.getElementById('stat-dist').textContent = user.spot_id || "0";
-                    document.getElementById('stat-job').textContent = user.job?.name ?? "なし";
-                    document.getElementById('stat-money').textContent = user.money;
+                    renderUserStatus(user);
                 });
         }
 
-        // ルーレット回転処理
-        btn.onclick = () => {
-            if (isSpinning) return;
-            isSpinning = true;
-            const es = new EventSource("/roulette/stream");
-            es.onmessage = (e) => {
-                if (e.data.startsWith("RESULT")) {
-                    es.close();
-                    isSpinning = false;
-                    return;
-                }
-                wheel.style.transform = `rotate(${parseFloat(e.data)}deg)`;
-            };
-        };
+        setInterval(syncCurrentUserStatus, 2000);
 
         window.addEventListener("load", () => {
             currentViewingUserId = myUserId;
