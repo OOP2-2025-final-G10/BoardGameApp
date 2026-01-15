@@ -10,15 +10,16 @@ class SpotEventService:
         stock_names = ["東葉電気", "Novasystems", "関東食品", "南日本旅客鉄道", "林不動産レジデンシャル"]
 
         #給料日ポイント
-        salary_points = [5, 20, 31, 41, 55, 67, 81, 95]
+        salary_points = [19, 31, 41, 55, 67, 77, 81, 95, 105, 115, 125]
 
         for point in salary_points:
             if spot_id_before < point <= user.spot_id:
                 UserEvent.give_salary(user, db)
-
-        #◯◯マス目にとまったら◯マス進める(特別マス)の処理
-        if user.spot_id == 68:
-            user.spot_id += 3
+        
+        #ストップマス
+        if spot_id_before < 9 <= user.spot_id:
+            user.spot_id = 9
+            UserEvent.give_salary(user, db)
 
         # 134マス目までのイベント定義
         match user.spot_id:
