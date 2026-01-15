@@ -174,7 +174,7 @@ def game():
         return redirect(url_for("index"))
 
     user = User.from_row(user_row)
-    return render_template("game.html", user=user, is_my_turn=is_my_turn)
+    return render_template("game.html", user=user, is_my_turn=is_my_turn, users=users)
 
 
 
