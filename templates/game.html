@@ -13,7 +13,19 @@
         <div class="game-main">
             <div class="map-area box-border">
                 <span class="map-label">マップ</span>
+                <div id="pieces-layer"></div>
                 <div class="board-overlay">
+                    <div class="pieces">
+                        <img src="{{ url_for('static', filename='piece0.png') }}" id="player-0" class="piece">
+                        <img src="{{ url_for('static', filename='piece1.png') }}" id="player-1" class="piece">
+                        <img src="{{ url_for('static', filename='piece2.png') }}" id="player-2" class="piece">
+                        <img src="{{ url_for('static', filename='piece3.png') }}" id="player-3" class="piece">
+                        <img src="{{ url_for('static', filename='piece4.png') }}" id="player-4" class="piece">
+                        <img src="{{ url_for('static', filename='piece5.png') }}" id="player-5" class="piece">
+                        <img src="{{ url_for('static', filename='piece6.png') }}" id="player-6" class="piece">
+                        <img src="{{ url_for('static', filename='piece7.png') }}" id="player-7" class="piece">
+                        <img src="{{ url_for('static', filename='piece8.png') }}" id="player-8" class="piece">
+                    </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 22%;">
                         <span class="tooltip">スタート（大学卒業・旅立ち）</span>
                     </div>
@@ -327,7 +339,7 @@
             </details>
 
             <ul class="status-info" id="userInfo">
-                
+
                 <li>ユーザー：</li>
                 <li>・ ゴールまでの距離：</li>
                 <li>・ 職業：</li>
@@ -342,7 +354,7 @@
     <script id="users-data" type="application/json">{{ users|tojson }}</script>
 
     <script>
-       
+
         const wheel = document.getElementById("roulette");
         const btn = document.getElementById("spinBtn");
 
@@ -653,6 +665,136 @@
 
         setInterval(loadStockChart, 2000);
         loadStockChart();
+
+        const SPOT_POSITIONS = {
+            0: { top: "86%", left: "22%", text: "スタート（大学卒業・旅立ち）" },
+            1: { top: "86%", left: "24%", text: "卒業旅行で散財する（3万円払う）" },
+            2: { top: "86%", left: "27%", text: "実家の手伝い（1万円もらう）" },
+            3: { top: "86%", left: "29.9%", text: "家具をニトリで爆買い（5万円払う）" },
+            4: { top: "86%", left: "32.5%", text: "【給料日】（給料をもらう）" },
+            5: { top: "86%", left: "35.5%", text: "アルバイトでミス（10万円払う）" },
+            6: { top: "86%", left: "38.3%", text: "福引でお米券（5,000円もらう）" },
+            7: { top: "86%", left: "41.3%", text: "風邪をひく（1回休み）" },
+            8: { top: "86%", left: "44.0%", text: "SNSがプチバズ（3万円もらう）" },
+            9: { top: "86%", left: "47.0%", text: "スマホ修理（2万円払う）" },
+            10: { top: "85%", left: "49.7%", text: "引越し手伝い（1万円もらう）" },
+            11: { top: "85%", left: "52.7%", text: "健康器具購入（3万円払う）" },
+            12: { top: "85%", left: "55.5%", text: "コンビニスイーツ（5,000円払う）" },
+            13: { top: "84%", left: "58.3%", text: "マッチングアプリ課金（1万円払う）" },
+            14: { top: "84%", left: "61%", text: "【就職マス】（10万円もらう）" },
+            15: { top: "83%", left: "64%", text: "親にプレゼント（3万円払う）" },
+            16: { top: "82%", left: "66.5%", text: "同期と飲み会" },
+            17: { top: "81%", left: "69%", text: "靴をなくす（1万円払う）" },
+            18: { top: "79%", left: "71%", text: "資格合格（5万円もらう）" },
+            19: { top: "76%", left: "71%", text: "【給料日】" },
+            20: { top: "73%", left: "69.5%", text: "フェス参加（2万円払う）" },
+            21: { top: "72%", left: "67%", text: "迷い猫保護（3万円もらう）" },
+            22: { top: "71%", left: "64.5%", text: "寝坊遅刻（1万円払う）" },
+            23: { top: "70%", left: "61.8%", text: "ボーナス（給料半額）" },
+            24: { top: "70%", left: "59.3%", text: "高級自転車（10万円払う）" },
+            25: { top: "70%", left: "56.8%", text: "健康になり3マス進む" },
+            26: { top: "70%", left: "54%", text: "外食（5,000円払う）" },
+            27: { top: "69%", left: "51.5%", text: "路上ライブ（2,000円もらう）" },
+            28: { top: "69%", left: "48.8%", text: "カード請求（5万円払う）" },
+            29: { top: "69%", left: "46%", text: "同窓会イベント" },
+            30: { top: "68%", left: "43.5%", text: "【給料日】" },
+            31: { top: "68%", left: "41%", text: "車購入（50万円払う）" },
+            32: { top: "67%", left: "38.5%", text: "ドライブデート（3万円払う）" },
+            33: { top: "66%", left: "36%", text: "営業成績トップ（30万円）" },
+            34: { top: "66%", left: "33.5%", text: "暴飲暴食（2万円払う）" },
+            35: { top: "65%", left: "31%", text: "結婚式ラッシュ（10万円払う）" },
+            36: { top: "62%", left: "29.5%", text: "【結婚マス】" },
+            37: { top: "59%", left: "29.3%", text: "ハワイ旅行（50万円払う）" },
+            38: { top: "56%", left: "30.5%", text: "手料理で2マス進む" },
+            39: { top: "54%", left: "32.7%", text: "家出（1回休み）" },
+            40: { top: "53%", left: "35%", text: "【給料日】" },
+            41: { top: "52.5%", left: "37.5%", text: "子犬を飼う（20万円払う）" },
+            42: { top: "53%", left: "40.3%", text: "宝くじ当選（100万円）" },
+            43: { top: "53.5%", left: "43%", text: "親知らず治療（1万円払う）" },
+            44: { top: "54%", left: "45.5%", text: "副業成功（20万円）" },
+            45: { top: "55%", left: "48.3%", text: "ネット詐欺対策（1万円払う）" },
+            46: { top: "55%", left: "51%", text: "騒音トラブル（30万円払う）" },
+            47: { top: "57%", left: "54%", text: "キャンプ道具（15万円払う）" },
+            48: { top: "58%", left: "57%", text: "YouTuber（5万円もらう）" },
+            49: { top: "59%", left: "59.5%", text: "税金支払い" },
+            50: { top: "60%", left: "62%", text: "家庭菜園（5,000円）" },
+            51: { top: "62%", left: "64.5%", text: "子供誕生（100万円）" },
+            52: { top: "63%", left: "67.3%", text: "学資保険（5万円払う）" },
+            53: { top: "64%", left: "70%", text: "【給料日】" },
+            54: { top: "65%", left: "72.5%", text: "ゴルフ開始（20万円払う）" },
+            55: { top: "66%", left: "75.3%", text: "ホールインワン（30万円）" },
+            56: { top: "65.5%", left: "78%", text: "ぎっくり腰（1回休み）" },
+            57: { top: "62%", left: "79.8%", text: "温泉旅行（5万円払う）" },
+            58: { top: "58%", left: "82.3%", text: "業績悪化（給料半額）" },
+            59: { top: "54.5%", left: "80.3%", text: "転職の誘い" },
+            60: { top: "51%", left: "79.8%", text: "洗濯機故障（15万円払う）" },
+            61: { top: "48%", left: "79.3%", text: "骨董品発見（50万円）" },
+            62: { top: "44.5%", left: "78%", text: "老後投資（10万円払う）" },
+            63: { top: "41.8%", left: "76%", text: "台風被害（100万円）" },
+            64: { top: "40%", left: "74%", text: "【給料日】" },
+            65: { top: "39%", left: "72%", text: "リフレッシュ休暇" },
+            66: { top: "37%", left: "69.3%", text: "教育費（30万円払う）" },
+            67: { top: "37%", left: "66.5%", text: "子供が優勝（10万円）" },
+            68: { top: "36%", left: "63.8%", text: "地域役員（1回休み）" },
+            69: { top: "35%", left: "61%", text: "ふるさと納税（3万円）" },
+            70: { top: "35%", left: "58.5%", text: "高級腕時計（100万円払う）" },
+            71: { top: "35%", left: "55.8%", text: "腕時計紛失（1回休み）" },
+            72: { top: "35%", left: "53%", text: "人間ドック（5万円払う）" },
+            73: { top: "35%", left: "50%", text: "【給料日】" },
+            74: { top: "31%", left: "50%", text: "ジム通い（10万円払う）" },
+            75: { top: "29%", left: "48.5%", text: "モテ期到来（5万円×全員）" },
+            76: { top: "29%", left: "45.5%", text: "熟年離婚の危機" },
+            77: { top: "29%", left: "43%", text: "怪我（5万円払う）" },
+            78: { top: "33%", left: "42%", text: "絆が深まる（100万円払う）" },
+            79: { top: "39%", left: "50%", text: "会社でミス（1回休み）" },
+            80: { top: "41.5%", left: "50%", text: "飲み会（1万円払う）" },
+            81: { top: "44%", left: "48.5%", text: "親孝行（40万円もらう）" },
+            82: { top: "44%", left: "46%", text: "交通事故（100万円払う）" },
+            83: { top: "43%", left: "43.5%", text: "へそくり発見（5万円）" },
+            84: { top: "40%", left: "42%", text: "インフル（1回休み）" },
+            85: { top: "37%", left: "42%", text: "ビンゴ（10万円）" },
+            86: { top: "35%", left: "42%", text: "倒産・リストラ（50万円）" }
+            // 必要な分だけ定義
+        };
+
+        async function renderPieces() {
+            const res = await fetch("/api/game_pieces");
+            const players = await res.json();
+
+            const layer = document.getElementById("pieces-layer");
+            layer.innerHTML = "";
+
+            const uuids = Object.keys(players); // UUID一覧（順序は毎回同じでOK）
+            const spotCount = {};
+
+            uuids.forEach((uuid, index) => {
+                const spotId = Number(players[uuid]);
+                const pos = SPOT_POSITIONS[spotId];
+                if (!pos) return;
+
+                spotCount[spotId] = (spotCount[spotId] || 0) + 1;
+                const offset = spotCount[spotId] - 1;
+
+                const img = document.createElement("img");
+                img.className = "piece";
+
+                // ★ここがポイント：UUID → 駒番号
+                const pieceIndex = index % 9; // 最大9人想定
+                img.src = `/static/piece${pieceIndex}.png`;
+
+                img.style.top = `calc(${pos.top} - 25px)`;
+                img.style.left = `calc(${pos.left} - 8px + ${offset * 22}px)`;
+
+                img.dataset.userId = uuid;
+
+                layer.appendChild(img);
+            });
+        }
+
+
+        setInterval(renderPieces, 1000);
+
     </script>
 </body>
+
 </html>
