@@ -4,14 +4,24 @@ import random
 class SpotEventService:
 
     @staticmethod
-    def handle(user, db):
-        spot = user.spot_id
+    def handle(user, spot_id_before, db):
 
         # 株の銘柄リスト（必要に応じて使用）
         stock_names = ["東葉電気", "Novasystems", "関東食品", "南日本旅客鉄道", "林不動産レジデンシャル"]
 
+        #給料日ポイント
+        salary_points = [5, 20, 31, 41, 55, 67, 81, 95]
+
+        for point in salary_points:
+            if spot_id_before < point <= user.spot_id:
+                UserEvent.give_salary(user, db)
+
+        #◯◯マス目にとまったら◯マス進める(特別マス)の処理
+        if user.spot_id == 68:
+            user.spot_id += 3
+
         # 134マス目までのイベント定義
-        match spot:
+        match user.spot_id:
             # --- 第1ゾーン：スタート〜30マス ---
             case 1: # 職業マス
                 UserEvent.change_job(user, "会社員")
