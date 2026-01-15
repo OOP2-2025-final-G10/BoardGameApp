@@ -151,6 +151,21 @@ body {
     height: 100%;
 }
 
+.map-area { position: relative; }
+#pieces-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+.piece {
+  position: absolute;
+  width: 47px;
+  height: 80px;
+  transition: top 0.25s, left 0.25s;
+  transform: scale(0.5)
+}
+
 .zoom-btns {
     position: absolute;
     top: 20px;

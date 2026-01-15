@@ -452,6 +452,23 @@ def api_stock_prices():
         "prices": result
     })
 
+@app.route("/api/game_pieces")
+def game_pieces():
+    db = get_db()
+    cur = db.cursor()
+
+    cur.execute("""
+        SELECT id, spot_id
+        FROM users
+    """)
+    rows = cur.fetchall()
+
+    players = {}
+    for row in rows:
+        players[row["id"]] = row["spot_id"]
+
+    return jsonify(players)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
