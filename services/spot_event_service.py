@@ -284,7 +284,8 @@ class SpotEventService:
             case 128: # 後の夢、海外の古城を衝動買い
                 UserEvent.subtract_money(user, 50000000)
             case 129: # 投資話が大失敗。財産が紙切れに
-                UserEvent.subtract_money(user, 30000000)
+                for stock_name in stock_names:
+                    UserEvent.delete_stock(user, stock_name, -1, db)
             case 130: # 超豪華世界一周クルーズへ出発
                 UserEvent.subtract_money(user, 15000000)
             case 131: # 豪邸の地下に巨大なシェルターを作ってしまった
