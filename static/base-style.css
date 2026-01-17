@@ -1,116 +1,144 @@
-/* ===== 共通リセット ===== */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-
+ 
 body {
     font-family: "Hiragino Sans", "Meiryo", sans-serif;
     height: 100vh;
     overflow: hidden;
+    /* 背景を木目調のグラデーションに */
+    background: linear-gradient(
+        90deg,
+        #d8b27c 0%,
+        #e5c59e 25%,
+        #d1a66d 50%,
+        #e5c59e 75%,
+        #d8b27c 100%
+    );
 }
 
-/* ページ別背景 */
-.setup-page {
-    background-color: #fff;
+
+.setup-page, .game-page {
+    background-color: transparent;
     padding: 20px;
 }
-
+ 
+.setup-page {
+    background-color: #efe3c6;
+    padding: 20px;
+}
+ 
 .game-page {
-    background-color: #fdfaf2;
+    background: #efe3c6;
     padding: 15px;
 }
-
+ 
+ 
 /* 共通枠 */
 .box-border {
-    border: 3px solid #333;
-    background-color: #fff;
+    background:
+        linear-gradient(
+            90deg,
+            #c9a26a 0%,
+            #d8b27c 25%,
+            #c09055 50%,
+            #d8b27c 75%,
+            #c9a26a 100%
+        );
+    border: 4px solid #5a3a1e;
+    border-radius: 10px;
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.4),
+        inset 0 -3px 6px rgba(0,0,0,0.4),
+        0 6px 10px rgba(0,0,0,0.4);
 }
-
+ 
+ 
 /* ===== setup.html 用 ===== */
 .setup-container {
     display: flex;
     height: 100%;
     gap: 20px;
 }
-
+ 
 .member-sidebar {
     width: 250px;
     padding: 20px;
 }
-
+ 
 .sidebar-title {
     text-align: center;
     font-size: 1.2rem;
     margin-bottom: 15px;
 }
-
+ 
 .member-ul {
     list-style: none;
 }
-
+ 
 .member-item {
     font-size: 1.2rem;
     border-bottom: 1px solid #ccc;
     padding: 8px 0;
 }
-
+ 
 .setup-main {
     flex: 1;
     position: relative;
     display: flex;
     flex-direction: column;
 }
-
+ 
 .page-header {
     display: flex;
     justify-content: center;
     padding-top: 40px;
 }
-
+ 
 .title-box {
     padding: 10px 60px;
 }
-
+ 
 .title-box h1 {
     font-size: 3rem;
     letter-spacing: 0.2em;
 }
-
+ 
 .registration-area {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
+ 
 .input-group {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
 }
-
+ 
 #userNameInput {
     width: 450px;
     padding: 15px;
     font-size: 1.3rem;
     text-align: center;
 }
-
+ 
 .join-btn {
     padding: 8px 20px;
     font-size: 1.1rem;
     cursor: pointer;
 }
-
+ 
 .footer-area {
     position: absolute;
     bottom: 10px;
     right: 10px;
 }
-
+ 
 .start-btn {
     padding: 15px 50px;
     font-size: 2.5rem;
@@ -118,7 +146,7 @@ body {
     text-decoration: none;
     color: #333;
 }
-
+ 
 /* ===== game.html 用 ===== */
 .game-container {
     display: flex;
@@ -126,38 +154,37 @@ body {
     height: 100%;
     gap: 15px;
 }
-
+ 
 .game-main {
     flex: 3;
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
-
+ 
 /* マップエリア：内側の線を隠し、枠の中にボタンを収める */
 .map-area {
     flex: 2.5;
     display: flex;
     position: relative;
-    overflow: hidden; /* はみ出た画像を隠す */
-
-    /* 背景画像設定 */
+    overflow: hidden; 
+ 
     background-image: url('BoardGame_map4 1.png');
-    background-size: 105% 105%; 
-
+    background-size: 105% 105%;
+ 
     background-position: center;
     background-repeat: no-repeat;
     background-color: #fff;
     height: 100%;
 }
-
+ 
 .zoom-btns {
     position: absolute;
     top: 20px;
     right: 30px;
     z-index: 10;
 }
-
+ 
 .zoom-btns button {
     width: 35px;
     height: 35px;
@@ -169,20 +196,20 @@ body {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.8);
 }
-
+ 
 .bottom-area {
     flex: 1;
     display: flex;
     gap: 15px;
 }
-
+ 
 .roulette-container {
     width: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
+ 
 .roulette-circle {
     width: 120px;
     height: 120px;
@@ -192,7 +219,7 @@ body {
     cursor: pointer;
     background-color: #fff;
 }
-
+ 
 .game-logo {
     flex: 1;
     font-size: 3.5rem;
@@ -201,16 +228,23 @@ body {
     align-items: center;
     letter-spacing: 0.3em;
 }
-
+ 
 .info-sidebar {
     flex: 1;
     padding: 20px;
-}
 
+    max-height: 100%;
+  overflow-y: auto;
+}
+ 
 .status-info {
     list-style: none;
     margin-top: 20px;
     line-height: 2.5;
+}
+ 
+.info-sidebar details {
+  margin-bottom: 15px;
 }
 
 .roulette-wrapper {
@@ -219,7 +253,7 @@ body {
     height: 240px;
     aspect-ratio: 1 / 1;
 }
-
+ 
 #roulette {
     width: 100%;
     height: 100%;
@@ -227,7 +261,7 @@ body {
     transform-origin: 50% 50%;
     transition: transform 0.02s linear;
 }
-
+ 
 .roulette-pointer {
     position: absolute;
     top: -0px;
@@ -240,16 +274,16 @@ body {
     border-bottom: 18px solid red;
     z-index: 10;
 }
-
+ 
 .roulette-circle.disabled {
     opacity: 0.4;
     cursor: not-allowed;
 }
-
+ 
 .roulette-circle {
     transition: opacity 0.3s;
 }
-
+ 
 .user-link {
     background: none;
     border: none;
@@ -259,18 +293,18 @@ body {
     text-decoration: underline;
     margin-bottom: 5px;
 }
-
-
+ 
+ 
 /* ===== マス目ツールチップ ===== */
 /* ===== マ目ツールチップ（修正版） ===== */
-
+ 
 .board-overlay {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    z-index: 20; /* 画像(デフォルト0〜10)より確実に上にする */
+    z-index: 20; 
 }
-
+ 
 .tooltip-wrapper.square {
     position: absolute;
     width: 25px;
@@ -280,28 +314,27 @@ body {
     
     z-index: 30;
 }
-
+ 
 .tooltip {
     position: absolute;
-    bottom: 120%; /* マスの少し上に出す */
+    bottom: 120%; 
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
-
+ 
     background: #fff;
     border: 2px solid #333;
     padding: 8px 12px;
     font-size: 0.9rem;
     line-height: 1.4;
     border-radius: 6px;
-
-    /* 表示・非表示の切り替え */
-    visibility: hidden; 
+ 
+    visibility: hidden;
     opacity: 0;
     transition: opacity 0.2s ease;
     z-index: 100;
 }
-
+ 
 /* 吹き出しの三角 */
 .tooltip::after {
     content: "";
@@ -313,14 +346,52 @@ body {
     border-style: solid;
     border-color: #333 transparent transparent transparent;
 }
-
+ 
 /* 【重要】ホバー設定：wrapperに乗ったら中のtooltipを出す */
 .tooltip-wrapper:hover .tooltip {
     visibility: visible;
     opacity: 1;
 }
-
-/* 給料日マス強調（お好みで） */
+ 
 .square.salary {
     box-shadow: 0 0 8px #f39c12;
 }
+ 
+ 
+.wood-panel {
+    background:
+        linear-gradient(
+            90deg,
+            #c9a26a 0%,
+            #d8b27c 20%,
+            #c09055 50%,
+            #d8b27c 80%,
+            #c9a26a 100%
+        );
+    border: 4px solid #5a3a1e;
+    border-radius: 10px;
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.4),
+        inset 0 -3px 6px rgba(0,0,0,0.4),
+        0 6px 10px rgba(0,0,0,0.4);
+}
+ 
+/* 木目ボタン */
+.wood-button {
+    background: linear-gradient(#deb887, #b08955);
+    border: 2px solid #5a3a1e;
+    border-radius: 8px;
+    color: #3a250f;
+    font-weight: bold;
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.6),
+        inset 0 -2px 3px rgba(0,0,0,0.4),
+        0 4px 6px rgba(0,0,0,0.4);
+}
+ 
+.wood-button:active {
+    transform: translateY(2px);
+    box-shadow:
+        inset 0 3px 4px rgba(0,0,0,0.6);
+}
+ 
