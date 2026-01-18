@@ -14,12 +14,12 @@ class SpotEventService:
 
         for point in salary_points:
             if spot_id_before < point <= user.spot_id:
-                UserEvent.give_salary(user, db)
+                UserEvent.give_salary(user)
         
         #ストップマス
         if spot_id_before < 9 <= user.spot_id:
             user.spot_id = 9
-            UserEvent.give_salary(user, db)
+            UserEvent.give_salary(user)
 
         # 134マス目までのイベント定義
         match user.spot_id:
