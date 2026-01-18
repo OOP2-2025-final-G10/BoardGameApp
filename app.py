@@ -32,8 +32,9 @@ def init_db():
             money INTEGER NOT NULL,
             job TEXT,
             spot_id INTEGER NOT NULL DEFAULT 0,
-            is_ready INTEGER DEFAULT 0,
-            holdings TEXT DEFAULT '{}'
+            is_ready INTEGER NOT NULL DEFAULT 0,
+            holdings TEXT DEFAULT '{}',
+            goal_order INTEGER          -- ゴール順位（未到達はNULL）
         )
     """)
 
@@ -43,50 +44,27 @@ def init_db():
             status TEXT NOT NULL,
             turn_user_id TEXT,
             turn_number INTEGER NOT NULL,
-            daily_prices TEXT
+            daily_prices TEXT,
+            goal_count INTEGER NOT NULL DEFAULT 0
         )
     """)
 
     db.execute("""
         INSERT INTO game_state
-        (id, status, turn_user_id, turn_number, daily_prices)
-        VALUES (1, 'waiting', NULL, 0, NULL)
+        (id, status, turn_user_id, turn_number, daily_prices, goal_count)
+        VALUES (1, 'waiting', NULL, 0, NULL, 0)
     """)
 
     db.commit()
     db.close()
 
+
 #セッションリセット用
 @app.route("/reset")
 def reset_session():
-    db = get_db()
-    try:
-        # 全ユーザー削除
-        db.execute("DELETE FROM users")
-
-        # ゲーム状態を完全初期化
-        db.execute("""
-            UPDATE game_state
-            SET
-                status = 'waiting',
-                turn_user_id = NULL,
-                turn_number = 0,
-                daily_prices = NULL
-            WHERE id = 1
-        """)
-
-        db.commit()
-    finally:
-        db.close()
-
-    # 全セッション破棄（進行中ユーザーも強制退出）
     session.clear()
-
     init_db()
-
     return redirect(url_for("index"))
-
-
 
 #参加画面
 @app.route("/", methods=["GET"])
@@ -251,8 +229,30 @@ def roulette_stream():
     if not user_id:
         return "", 403
 
+    db = get_db()
+    try:
+        user = db.execute("""
+            SELECT goal_order
+            FROM users
+            WHERE id = ?
+        """, (user_id,)).fetchone()
+
+        state = db.execute("""
+            SELECT turn_user_id
+            FROM game_state
+            WHERE id = 1
+        """).fetchone()
+
+        # ★ ゴール済み or 自分のターンでない場合は即拒否
+        if user["goal_order"] is not None:
+            return "", 403
+
+        if state["turn_user_id"] != user_id:
+            return "", 403
+    finally:
+        db.close()
+
     def event_stream():
-        # ルーレット演出専用（DBアクセス禁止）
         for angle in RouletteService.spin_stream():
             yield f"data:{angle}\n\n"
 
@@ -265,6 +265,7 @@ def roulette_stream():
         }
     )
 
+
 @app.post("/api/roulette/result")
 def roulette_result():
     user_id = session.get("user_id")
@@ -273,21 +274,43 @@ def roulette_result():
 
     db = get_db()
     try:
-        state = db.execute(
-            "SELECT turn_user_id FROM game_state WHERE id = 1"
-        ).fetchone()
+        state = db.execute("""
+            SELECT turn_user_id, goal_count
+            FROM game_state
+            WHERE id = 1
+        """).fetchone()
 
         if not state or state["turn_user_id"] != user_id:
             return {"error": "not your turn"}, 403
 
+        user = User.get_by_id(db, user_id)
+
+        # ★ すでにゴールしているユーザーは不可
+        if user.goal_order is not None:
+            return {"error": "already_goal"}, 403
+
         step = RouletteService.consume_result()
 
-        user = User.get_by_id(db, user_id)
         spot_id_before = user.spot_id
-
         SpotEventService.handle(user, spot_id_before, db)
 
-        user.spot_id += step
+        user.spot_id += step * 10
+
+        reached_goal = False
+        rank = None
+
+        # ★ ゴール到達「瞬間」だけ処理
+        if user.spot_id >= 135:
+            reached_goal = True
+            rank = state["goal_count"] + 1
+
+            user.goal_order = rank
+
+            db.execute("""
+                UPDATE game_state
+                SET goal_count = goal_count + 1
+                WHERE id = 1
+            """)
 
         user.save(db)
 
@@ -296,10 +319,13 @@ def roulette_result():
 
         return {
             "step": step,
-            "spot_id": user.spot_id
+            "spot_id": user.spot_id,
+            "goal": reached_goal,
+            "rank": rank
         }
     finally:
         db.close()
+
 
 @app.route("/api/users")
 def api_users():

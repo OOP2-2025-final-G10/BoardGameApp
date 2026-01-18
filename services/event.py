@@ -165,6 +165,58 @@ class UserEvent:
             "qty": sell_qty,
             "earned": total_gain
         }
+    
+    @staticmethod
+    def delete_stock(
+        user: User,
+        stock_name: str,
+        amount: int,
+        db
+    ):
+        if amount < -1:
+            return {"sold": False, "reason": "不正な値です"}
+        
+        if amount == 0:
+            return {"sold": False, "reason": "0株は売却できません"}
+    
+        if stock_name not in stock_names:
+            return {"sold": False, "reason": "invalid stock name"}
+    
+        owned = user.holdings.get(stock_name, 0)
+        if owned == 0:
+            return {"sold": False, "reason": "その株は保有していません"}
+    
+        daily_prices = UserEvent.get_daily_prices(db)
+        if not daily_prices:
+            return {"sold": False, "reason": "price data not found"}
+    
+        day = user.spot_id
+        if day > total_days:
+            day = total_days - 1
+
+        day += previous_days
+
+        prices_today = daily_prices[day]
+        index = stock_names.index(stock_name)
+        price = max(1, int(round(prices_today[index])))
+    
+        sell_qty = owned if amount == -1 else amount
+        if owned < sell_qty:
+            return {"sold": False, "reason": "保有数を超えています"}
+    
+        total_gain = price * sell_qty
+    
+        user.holdings[stock_name] -= sell_qty
+    
+        if user.holdings[stock_name] == 0:
+            del user.holdings[stock_name]
+    
+        return {
+            "sold": True,
+            "symbol": stock_name,
+            "qty": sell_qty,
+            "earned": total_gain
+        }
 
 
     @staticmethod

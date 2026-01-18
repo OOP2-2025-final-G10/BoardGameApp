@@ -1,7 +1,3 @@
-from controllers.frontend_controller import FrontendController
-
-
-# services/turn_service.py
 class TurnService:
 
     @staticmethod
@@ -15,26 +11,29 @@ class TurnService:
 
         current_user_id = state["turn_user_id"]
 
-        # ユーザーを順番付きで取得
+        # ★ 未ゴールユーザーのみ取得
         users = db.execute("""
             SELECT id
             FROM users
+            WHERE goal_order IS NULL
             ORDER BY rowid ASC
         """).fetchall()
 
+
+        # 全員ゴール済みなら何もしない
         if not users:
             return
 
         user_ids = [u["id"] for u in users]
 
-        # 現在のユーザー位置
-        try:
+        # 現在ユーザーがゴール済みの場合も考慮
+        if current_user_id in user_ids:
             index = user_ids.index(current_user_id)
-        except ValueError:
-            index = 0
+            next_index = (index + 1) % len(user_ids)
+        else:
+            # 現在ユーザーがゴールしていたら先頭へ
+            next_index = 0
 
-        # 次のユーザー（ループ）
-        next_index = (index + 1) % len(user_ids)
         next_user_id = user_ids[next_index]
 
         # game_state 更新
