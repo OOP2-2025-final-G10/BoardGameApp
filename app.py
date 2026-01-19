@@ -292,9 +292,14 @@ def roulette_result():
         step = RouletteService.consume_result()
 
         spot_id_before = user.spot_id
+        
+        # 1. 先に移動を行う
+        # 注意: * 10 があると1が出ても10マス進んでしまい、1〜9マス目のイベントを飛ばしてしまいます。
+        # 本来の挙動に合わせて * 10 を削除するか確認してください。
+        user.spot_id += step  
+        
+        # 2. 移動後の位置(user.spot_id)を使ってイベント判定を行う
         SpotEventService.handle(user, spot_id_before, db)
-
-        user.spot_id += step * 10
 
         reached_goal = False
         rank = None
