@@ -9,6 +9,7 @@ from models.db import get_db
 from services.roulette_service import RouletteService
 from services.spot_event_service import SpotEventService
 from services.turn_service import TurnService
+from services.game_reset_service import GameResetService
 from flask import jsonify
 
 app = Flask(__name__)
@@ -62,6 +63,7 @@ def init_db():
 #セッションリセット用
 @app.route("/reset")
 def reset_session():
+    GameResetService.reset_game()
     session.clear()
     init_db()
     return redirect(url_for("index"))
@@ -502,4 +504,6 @@ def game_pieces():
 
 
 if __name__ == '__main__':
+    init_db()
+    GameResetService.reset_game()
     app.run(host='0.0.0.0', port=8080, debug=True)

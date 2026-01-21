@@ -117,7 +117,7 @@
                         <span class="tooltip">同窓会で昔の恋人に再会。<br>（飲みにさそわれ 3万円払う）</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 68%; left: 43.5%;">
-                        <span class="tooltip">。</span>
+                        <span class="tooltip">なにも起きなかった。</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 68%; left: 41%;">
                         <span class="tooltip">【給料日】<br>（給料をもらう）</span>
@@ -186,7 +186,7 @@
                         <span class="tooltip">家庭菜園のトマトが豊作。<br>（食費浮く 5,000円もらう）</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 64%; left: 70%;">
-                        <span class="tooltip">子供が生まれる！<br>（出産祝い 100万円もらう）<br> ※未婚なら親戚の子供にお年玉をあげる-3万</span>
+                        <span class="tooltip">子供が生まれる！<br>（出産祝い 100万円もらう）</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 65%; left: 72.5%;">
                         <span class="tooltip">学資保険に加入する。<br>（5万円払う）</span>
@@ -234,10 +234,10 @@
                         <span class="tooltip">勤続10年リフレッシュ休暇。<br>（2マス進む）</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 35%; left: 61%;">
-                        <span class="tooltip">子供の教育費がかさむ。<br>（30万円払う ※子持ちのみ）</span>
+                        <span class="tooltip">子供の教育費がかさむ。<br>（30万円払う）</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 35%; left: 58.5%;">
-                        <span class="tooltip">子供がコンクールで優勝！<br>（10万円もらう ※子持ちのみ）</span>
+                        <span class="tooltip">子供がコンクールで優勝！<br>（10万円もらう）</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 35%; left: 55.8%;">
                         <span class="tooltip">地域の役員を押し付けられる。<br>（ストレスで1回休み）</span>
@@ -490,8 +490,6 @@
                 <li>・ ゴールまでの距離：</li>
                 <li>・ 職業：</li>
                 <li>・ 所持金：</li>
-                <li>・ 配偶者の有無：</li>
-                <li>・ 子供の数：</li>
                 <li>・ 持ち株：</li>
             </ul>
         </aside>
@@ -631,7 +629,9 @@
 
 
         function renderUserStatus(user) {
-            statusItems[1].textContent = `・ ゴールまでの距離：${user.spot_id}`;
+            const GOAL_SPOT = 135;
+            const remain = Math.max(GOAL_SPOT - user.spot_id, 0);
+            statusItems[1].textContent = `・ ゴールまでの距離：${remain}`;
             statusItems[0].textContent = `ユーザー：${user.name}`;
             statusItems[2].textContent = `・ 職業：${user.job?.name ?? "なし"}`;
             statusItems[3].textContent = `・ 所持金：${user.money}`;
