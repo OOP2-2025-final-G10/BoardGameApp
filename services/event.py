@@ -10,6 +10,11 @@ BROKER_FEE_RATE = 0.005
 MIN_BROKER_FEE = 100
 
 stock_names = ["東葉電気", "Novasystems", "関東食品", "南日本旅客鉄道", "林不動産レジデンシャル"]
+GOAL_PRIZES = {
+    1: 100_000_000,
+    2: 50_000_000,
+    3: 30_000_000
+}
 
 class UserEvent:
 
@@ -218,6 +223,23 @@ class UserEvent:
             "earned": total_gain
         }
 
+    @staticmethod
+    def sell_all_stocks(user: User, db):
+        if not user.holdings:
+            return
+
+        for name in list(user.holdings.keys()):
+            UserEvent.sell_stock(
+                user=user,
+                stock_name=name,
+                amount=-1,
+                db=db
+            )
+
+    @staticmethod
+    def goal_prize_for_rank(rank: int) -> int:
+        return GOAL_PRIZES.get(rank, 0)
+
 
     @staticmethod
     def get_daily_prices(db):
@@ -231,4 +253,3 @@ class UserEvent:
             return None
 
         return json.loads(row["daily_prices"])
-

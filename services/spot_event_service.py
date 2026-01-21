@@ -10,7 +10,7 @@ class SpotEventService:
         stock_names = ["東葉電気", "Novasystems", "関東食品", "南日本旅客鉄道", "林不動産レジデンシャル"]
 
         #給料日ポイント
-        salary_points = [19, 31, 41, 55, 67, 77, 81, 95, 105, 115, 125]
+        salary_points = [19, 31, 41, 55, 67, 77, 81, 96, 106, 116, 126]
 
         for point in salary_points:
             if spot_id_before < point <= user.spot_id:
@@ -19,27 +19,36 @@ class SpotEventService:
         #ストップマス
         if spot_id_before < 9 <= user.spot_id:
             user.spot_id = 9
-            UserEvent.give_salary(user)
 
         # 134マス目までのイベント定義
         match user.spot_id:
             # --- 第1ゾーン：スタート〜30マス ---
+            case 0: # スタート
+                pass
             case 1: # 職業マス
                 UserEvent.change_job(user, "会社員")
+                user.spot_id = 9
             case 2: # 職業マス
                 UserEvent.change_job(user, "医者")
+                user.spot_id = 9
             case 3: # 職業マス
-                UserEvent.change_job(user, "アルバイトリーダー")
+                UserEvent.changev_job(user, "アルバイトリーダー")
+                user.spot_id = 9
             case 4: # 職業マス
                 UserEvent.change_job(user, "エンジニア")
+                user.spot_id = 9
             case 5: # 職業マス
                 UserEvent.change_job(user, "研究者")
+                user.spot_id = 9
             case 6: # 職業マス
                 UserEvent.change_job(user, "教員")
+                user.spot_id = 9
             case 7: # 職業マス
                 UserEvent.change_job(user, "公務員")
+                user.spot_id = 9
             case 8: # 職業マス
                 UserEvent.change_job(user, "経営者")
+                user.spot_id = 9
             case 9: # 全員止まる
                 pass
             case 10: # 友人の引越しを手伝う
@@ -200,113 +209,113 @@ class SpotEventService:
                 UserEvent.subtract_money(user, 5000000)
             case 83: # 危機を乗り越え絆が深まる
                 UserEvent.subtract_money(user, 1000000)
-            case 84: # 会社が倒産！リストラ！
+            case 84: # 危機を乗り越え絆が深まる
+                UserEvent.subtract_money(user, 1000000)
+            case 85: # 会社が倒産！リストラ！
                 UserEvent.add_money(user, 500000)
                 UserEvent.change_job(user, "無職")
-            case 85: # 蕎麦屋に投資
+            case 86: # 蕎麦屋に投資
                 UserEvent.subtract_money(user, 3000000)
-            case 86: # 投資先の蕎麦屋が大繁盛！
+            case 87: # 投資先の蕎麦屋が大繁盛！
                 UserEvent.add_money(user, 5000000)
-            case 87: # 投資先の蕎麦屋が潰れる
+            case 88: # 投資先の蕎麦屋が潰れる
                 UserEvent.subtract_money(user, 6000000)
-            case 88: # 孫が生まれる
+            case 89: # 孫が生まれる
                 UserEvent.subtract_money(user, 200000)
-            case 89: # 孫にお小遣いをせびられる
+            case 90: # 孫にお小遣いをせびられる
                 UserEvent.subtract_money(user, 50000)
-            case 90: # 親戚にお金をせがまれる
+            case 91: # 親戚にお金をせがまれる
                 UserEvent.subtract_money(user, 500000)
-            case 91: # カジノで全財産を賭ける（無一文）
+            case 92: # カジノで全財産を賭ける（無一文）
                 user.money = 0
-            case 92: # 石油を掘り当てる
+            case 93: # 石油を掘り当てる
                 UserEvent.add_money(user, 100000000)
-            case 93: # コツコツ貯めた500円玉貯金を開封
+            case 94: # コツコツ貯めた500円玉貯金を開封
                 UserEvent.add_money(user, 300000)
-            case 94: # 家庭菜園が巨大化してテレビ取材
+            case 95: # 家庭菜園が巨大化してテレビ取材
                 UserEvent.add_money(user, 50000)
-            case 95: # 【給料日】
+            case 96: # 【給料日】
                 pass
-            case 96: # 富豪に恵んでもらう
+            case 97: # 富豪に恵んでもらう
                 if user.money == 0:
                     UserEvent.add_money(user, 100000000)
-            case 97: # 隕石が庭に落ちてくる
+            case 98: # 隕石が庭に落ちてくる
                 UserEvent.add_money(user, 5000000)
-            case 98: # 宇宙人と遭遇（3マス戻る）
+            case 99: # 宇宙人と遭遇（3マス戻る）
                 user.spot_id -= 3
-            case 99: # 世界一周クルーズへ出発
+            case 100: # 世界一周クルーズへ出発
                 UserEvent.subtract_money(user, 3000000)
-            case 100: # 船上で大富豪と仲良くなる（壺をもらう）
+            case 101: # 船上で大富豪と仲良くなる（壺をもらう）
                 pass
-            case 101: # 実は壺が偽物だった
+            case 102: # 実は壺が偽物だった
                 UserEvent.subtract_money(user, 100000)
-            case 102: # シロアリ被害で家が倒壊
+            case 103: # シロアリ被害で家が倒壊
                 UserEvent.subtract_money(user, 10000000)
-            case 103: # 選挙に出馬する
+            case 104: # 選挙に出馬する
                 UserEvent.subtract_money(user, 5000000)
-            case 104: # 当選！政治家になる
+            case 105: # 当選！政治家になる
                 UserEvent.add_money(user, 10000000)
                 # 政治家ジョブがあれば変更するが、今回はボーナスのみ
-            case 105: # 【給料日】
+            case 106: # 【給料日】
                 pass
-            case 106: # 徳川埋蔵金を発見！
+            case 107: # 徳川埋蔵金を発見！
                 UserEvent.add_money(user, 50000000)
-            case 107: # 偽物だった
+            case 108: # 偽物だった
                 UserEvent.subtract_money(user, 10000)
-            case 108: # ユーチューバーの孫とコラボ
+            case 109: # ユーチューバーの孫とコラボ
                 UserEvent.add_money(user, 1000000)
-            case 109: # 高齢者詐欺を撃退！
+            case 110: # 高齢者詐欺を撃退！
                 UserEvent.add_money(user, 100000)
-            case 110: # ゲートボール大会で優勝
-                UserEvent.add_money(user, 30000)
-            case 111: # 突然のモテ期、再び（養育費）
+            case 111: # ゲートボール大会で優勝
+                UserEvent.subtract_money(user, 30000)
+            case 112: # 突然のモテ期、再び（養育費）
                 UserEvent.subtract_money(user, 10000000)
-            case 112: # 昔貸したお金が利子付きで返ってくる
+            case 113: # 昔貸したお金が利子付きで返ってくる
                 UserEvent.add_money(user, 1000000)
-            case 113: # 豪邸をリフォームする
+            case 114: # 豪邸をリフォームする
                 UserEvent.subtract_money(user, 15000000)
-            case 114: # 税務署の監査が入る（手持ちの半分没収）
+            case 115: # 税務署の監査が入る（手持ちの半分没収）
                 seize = user.money // 2
                 UserEvent.subtract_money(user, seize)
-            case 115: # 【給料日】
+            case 116: # 【給料日】
                 pass
-            case 116: # 名誉市民に選ばれる
+            case 117: # 名誉市民に選ばれる
                 UserEvent.add_money(user, 3000000)
-            case 117: # 若返りの薬を怪しい商人から買う
+            case 118: # 若返りの薬を怪しい商人から買う
                 UserEvent.subtract_money(user, 500000)
-            case 118: # 薬の効果でお腹を下す
+            case 119: # 薬の効果でお腹を下す
                 UserEvent.subtract_money(user, 10000)
-            case 119: # 全員にプレゼントを配る（3人に100万ずつと仮定）
+            case 120: # 全員にプレゼントを配る（3人に100万ずつと仮定）
                 UserEvent.subtract_money(user, 3000000)
-            case 120: # 全員から敬われる（3人から100万ずつと仮定）
+            case 121: # 全員から敬われる（3人から100万ずつと仮定）
                 UserEvent.add_money(user, 3000000)
-            case 121: # 開発したAIアプリが世界的な大ヒット！
+            case 122: # 開発したAIアプリが世界的な大ヒット！
                 UserEvent.add_money(user, 50000000)
-            case 122: # 自宅の庭から徳川埋蔵金がざくざく出てきた
+            case 123: # 自宅の庭から徳川埋蔵金がざくざく出てきた
                 UserEvent.add_money(user, 45000000)
-            case 123: # 昔買った絵画が、実は巨匠の作品だった
+            case 124: # 昔買った絵画が、実は巨匠の作品だった
                 UserEvent.add_money(user, 30000000)
-            case 124: # 宇宙旅行のペアチケットが当選（換金）
+            case 125: # 宇宙旅行のペアチケットが当選（換金）
                 UserEvent.add_money(user, 20000000)
-            case 125: # 【給料日】
+            case 126: # 【給料日】
                 pass
-            case 126: # 所有していた山林がリゾート開発地に選ばれた
+            case 127: # 所有していた山林がリゾート開発地に選ばれた
                 UserEvent.add_money(user, 35000000)
-            case 127: # 仮想通貨が暴騰して「億り人」ならぬ「半億り人」に
+            case 128: # 仮想通貨が暴騰して「億り人」ならぬ「半億り人」に
                 UserEvent.add_money(user, 50000000)
-            case 128: # 後の夢、海外の古城を衝動買い
+            case 129: # 後の夢、海外の古城を衝動買い
                 UserEvent.subtract_money(user, 50000000)
-            case 129: # 投資話が大失敗。財産が紙切れに
-                for stock_name in stock_names:
-                    UserEvent.delete_stock(user, stock_name, -1, db)
-            case 130: # 超豪華世界一周クルーズへ出発
+            case 130: # 投資話が大失敗。財産が紙切れに
+                UserEvent.subtract_money(user, 30000000)
+            case 131: # 超豪華世界一周クルーズへ出発
                 UserEvent.subtract_money(user, 15000000)
-            case 131: # 豪邸の地下に巨大なシェルターを作ってしまった
+            case 132: # 豪邸の地下に巨大なシェルターを作ってしまった
                 UserEvent.subtract_money(user, 20000000)
-            case 132: # 孫や親戚全員に新車をプレゼントする
+            case 133: # 孫や親戚全員に新車をプレゼントする
                 UserEvent.subtract_money(user, 10000000)
-            case 133: # 美術品のオークションで熱くなりすぎて落札
+            case 134: # 美術品のオークションで熱くなりすぎて落札
                 UserEvent.subtract_money(user, 40000000)
-            case 134: # 【ゴール！】
-                # 順位判定やボーナスは別途ゲームロジックで処理を想定
+            case 135: # 【ゴール！】
                 pass
 
         user.save(db)

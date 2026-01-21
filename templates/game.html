@@ -12,434 +12,425 @@
     <div class="game-container">
         <div class="game-main">
             <div class="map-area box-border">
-                <span class="map-label">マップ</span>
                 <div id="pieces-layer"></div>
                 <div class="board-overlay">
-                    <div class="pieces">
-                        <img src="{{ url_for('static', filename='piece0.png') }}" id="player-0" class="piece">
-                        <img src="{{ url_for('static', filename='piece1.png') }}" id="player-1" class="piece">
-                        <img src="{{ url_for('static', filename='piece2.png') }}" id="player-2" class="piece">
-                        <img src="{{ url_for('static', filename='piece3.png') }}" id="player-3" class="piece">
-                        <img src="{{ url_for('static', filename='piece4.png') }}" id="player-4" class="piece">
-                        <img src="{{ url_for('static', filename='piece5.png') }}" id="player-5" class="piece">
-                        <img src="{{ url_for('static', filename='piece6.png') }}" id="player-6" class="piece">
-                        <img src="{{ url_for('static', filename='piece7.png') }}" id="player-7" class="piece">
-                        <img src="{{ url_for('static', filename='piece8.png') }}" id="player-8" class="piece">
-                    </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 22%;">
-                        <span class="tooltip">スタート（大学卒業・旅立ち）</span>
+                        <span class="tooltip">スタート（大学卒業・旅立ち）[1]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 24%;">
-                        <span class="tooltip">職業マス<br>（会社員）</span>
+                        <span class="tooltip">職業マス<br>（会社員）[2]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 27%;">
-                        <span class="tooltip">職業マス<br>（医者）</span>
+                        <span class="tooltip">職業マス<br>（医者）[3]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 29.9%;">
-                        <span class="tooltip">職業マス<br>（アルバイトリーダー）</span>
+                        <span class="tooltip">職業マス<br>（アルバイトリーダー）[4]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 32.5%;">
-                        <span class="tooltip">職業マス<br>（エンジニア）</span>
+                        <span class="tooltip">職業マス<br>（エンジニア）[5]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 35.5%;">
-                        <span class="tooltip"> 職業マス<br>（研究者）</span>
+                        <span class="tooltip"> 職業マス<br>（研究者）[6]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 38.3%;">
-                        <span class="tooltip">職業マス<br>（教員）</span>
+                        <span class="tooltip">職業マス<br>（教員）[7]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 41.3%;">
-                        <span class="tooltip">職業マス<br>（公務員）</span>
+                        <span class="tooltip">職業マス<br>（公務員）[8]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 44.0%;">
-                        <span class="tooltip">職業マス<br>（経営者）</span>
+                        <span class="tooltip">職業マス<br>（経営者）[9]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 47.0%;">
-                        <span class="tooltip">【全員止まる】</span>
+                        <span class="tooltip">【全員止まる】[10]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 85%; left: 49.7%;">
-                        <span class="tooltip">友人の引越しを手伝う。<br>（お礼に 1万円もらう）</span>
+                        <span class="tooltip">友人の引越しを手伝う。<br>（お礼に 1万円もらう）[11]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 85%; left: 52.7%;">
-                        <span class="tooltip">深夜のテンションで<br>謎の健康器具を買う。<br>（3万円払う）</span>
+                        <span class="tooltip">深夜のテンションで<br>謎の健康器具を買う。<br>（3万円払う）[12]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 85%; left: 55.5%;">
-                        <span class="tooltip">コンビニスイーツにハマる。<br>（5,000円払う）</span>
+                        <span class="tooltip">コンビニスイーツにハマる。<br>（5,000円払う）[13]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 84%; left: 58.3%;">
-                        <span class="tooltip">マッチングアプリに登録する。<br>（課金 1万円払う）</span>
+                        <span class="tooltip">マッチングアプリに登録する。<br>（課金 1万円払う）[14]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 84%; left: 61%;">
-                        <span class="tooltip">実家の手伝いをしてお小遣いをもらう<br>（お小遣い 1万円もらう）</span>
+                        <span class="tooltip">実家の手伝いをしてお小遣いをもらう<br>（お小遣い 1万円もらう）[15]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 83%; left: 64%;">
-                        <span class="tooltip">初任給で親にプレゼント。<br>（3万円払う）</span>
+                        <span class="tooltip">初任給で親にプレゼント。<br>（3万円払う）[16]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 82%; left: 66.5%;">
-                        <span class="tooltip">同期と飲み会で意気投合。</span>
+                        <span class="tooltip">同期と飲み会で意気投合。[17]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 81%; left: 69%;">
-                        <span class="tooltip">満員電車で靴が片方なくなる。<br>（靴代 1万円払う）</span>
+                        <span class="tooltip">満員電車で靴が片方なくなる。<br>（靴代 1万円払う）[18]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 79%; left: 71%;">
-                        <span class="tooltip">資格試験に合格。<br>（報奨金 5万円もらう）</span>
+                        <span class="tooltip">資格試験に合格。<br>（報奨金 5万円もらう）[19]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 76%; left: 71%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[20]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 73%; left: 69.5%;">
-                        <span class="tooltip">週末にフェスへ行く。<br>（チケット代 2万円払う）</span>
+                        <span class="tooltip">週末にフェスへ行く。<br>（チケット代 2万円払う）[21]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 72%; left: 67%;">
-                        <span class="tooltip">迷い猫を保護して<br>飼い主に感謝される。<br>（謝礼 3万円もらう）</span>
+                        <span class="tooltip">迷い猫を保護して<br>飼い主に感謝される。<br>（謝礼 3万円もらう）[22]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 71%; left: 64.5%;">
-                        <span class="tooltip">寝坊して遅刻。<br>（罰金 1万円払う）</span>
+                        <span class="tooltip">寝坊して遅刻。<br>（罰金 1万円払う）[23]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 70%; left: 61.8%;">
-                        <span class="tooltip">ボーナスが出た！<br>（給料の半額をもらう）</span>
+                        <span class="tooltip">ボーナスが出た！<br>（給料の半額をもらう）[24]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 70%; left: 59.3%;">
-                        <span class="tooltip">衝動的に高い自転車を買う。<br>（10万円払う）</span>
+                        <span class="tooltip">衝動的に高い自転車を買う。<br>（10万円払う）[25]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 70%; left: 56.8%;">
-                        <span class="tooltip">サイクリングで健康になる。<br>（3マス進む）</span>
+                        <span class="tooltip">サイクリングで健康になる。<br>（3マス進む）[26]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 70%; left: 54%;">
-                        <span class="tooltip">自炊に失敗して結局外食。<br>（5,000円払う）</span>
+                        <span class="tooltip">自炊に失敗して結局外食。<br>（5,000円払う）[27]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 69%; left: 51.5%;">
-                        <span class="tooltip">路上ライブで投げ銭をもらう。<br>（2,000円もらう）</span>
+                        <span class="tooltip">路上ライブで投げ銭をもらう。<br>（2,000円もらう）[28]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 69%; left: 48.8%;">
-                        <span class="tooltip">クレジットカードの請求額に驚愕。<br>（5万円払う）</span>
+                        <span class="tooltip">クレジットカードの請求額に驚愕。<br>（5万円払う）[29]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 69%; left: 46%;">
-                        <span class="tooltip">同窓会で昔の恋人に再会。<br>（飲みにさそわれ 3万円払う）</span>
+                        <span class="tooltip">同窓会で昔の恋人に再会。<br>（飲みにさそわれ 3万円払う）[30]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 68%; left: 43.5%;">
-                        <span class="tooltip">。</span>
+                        <span class="tooltip">。[31]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 68%; left: 41%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[32]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 67%; left: 38.5%;">
-                        <span class="tooltip">車を購入する。<br>（ローン頭金 50万円払う）</span>
+                        <span class="tooltip">車を購入する。<br>（ローン頭金 50万円払う）[33]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 66%; left: 36%;">
-                        <span class="tooltip">ドライブデートに行く。<br>（ガソリン代・食事代 3万円払う）</span>
+                        <span class="tooltip">ドライブデートに行く。<br>（ガソリン代・食事代 3万円払う）[34]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 66%; left: 33.5%;">
-                        <span class="tooltip">営業成績トップで表彰。<br>（金一封 30万円もらう）</span>
+                        <span class="tooltip">営業成績トップで表彰。<br>（金一封 30万円もらう）[35]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 65%; left: 31%;">
-                        <span class="tooltip">ストレスで暴飲暴食。<br>（2万円払う）</span>
+                        <span class="tooltip">ストレスで暴飲暴食。<br>（2万円払う）[36]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 62%; left: 29.5%;">
-                        <span class="tooltip">友人の結婚式ラッシュ。<br>（ご祝儀 10万円払う）</span>
+                        <span class="tooltip">友人の結婚式ラッシュ。<br>（ご祝儀 10万円払う）[37]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 59%; left: 29.3%;">
-                        <span class="tooltip">【ストップ！結婚マス】<br>（全員からご祝儀3万円ずつもらう）</span>
+                        <span class="tooltip">【ストップ！結婚マス】<br>（全員からご祝儀3万円ずつもらう）[38]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 56%; left: 30.5%;">
-                        <span class="tooltip">旅行でハワイへ。<br>（50万円払う）</span>
+                        <span class="tooltip">旅行でハワイへ。<br>（50万円払う）[39]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 54%; left: 32.7%;">
-                        <span class="tooltip">手料理が美味しい。<br>（元気が出て2マス進む）</span>
+                        <span class="tooltip">手料理が美味しい。<br>（元気が出て2マス進む）[40]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 53%; left: 35%;">
-                        <span class="tooltip">喧嘩して家出する。<br>（1回休み）</span>
+                        <span class="tooltip">喧嘩して家出する。<br>（1回休み）[41]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 52.5%; left: 37.5%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[42]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 53%; left: 40.3%;">
-                        <span class="tooltip">子犬を飼い始める。<br>（ペット代 20万円払う）</span>
+                        <span class="tooltip">子犬を飼い始める。<br>（ペット代 20万円払う）[43]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 53.5%; left: 43%;">
-                        <span class="tooltip">宝くじ（ミニロト）に当選！<br>（100万円もらう）</span>
+                        <span class="tooltip">宝くじ（ミニロト）に当選！<br>（100万円もらう）[44]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 54%; left: 45.5%;">
-                        <span class="tooltip">親知らずを抜く。<br>（治療費 1万円払う）</span>
+                        <span class="tooltip">親知らずを抜く。<br>（治療費 1万円払う）[45]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 55%; left: 48.3%;">
-                        <span class="tooltip">副業が軌道に乗る。<br>（臨時収入 20万円もらう）</span>
+                        <span class="tooltip">副業が軌道に乗る。<br>（臨時収入 20万円もらう）[46]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 55%; left: 51%;">
-                        <span class="tooltip">ネット詐欺にあいかける。<br>（セーフティソフト代 1万円払う）</span>
+                        <span class="tooltip">ネット詐欺にあいかける。<br>（セーフティソフト代 1万円払う）[47]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 57%; left: 54%;">
-                        <span class="tooltip">近所の騒音トラブルに巻き込まれる。<br>（引越し費用 30万円払う）</span>
+                        <span class="tooltip">近所の騒音トラブルに巻き込まれる。<br>（引越し費用 30万円払う）[48]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 58%; left: 57%;">
-                        <span class="tooltip">趣味のキャンプ道具を揃える。<br>（15万円払う）</span>
+                        <span class="tooltip">趣味のキャンプ道具を揃える。<br>（15万円払う）[49]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 59%; left: 59.5%;">
-                        <span class="tooltip">YouTuberデビュー。意外と再生される。<br>（収益 5万円もらう）</span>
+                        <span class="tooltip">YouTuberデビュー。意外と再生される。<br>（収益 5万円もらう）[50]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 60%; left: 62%;">
-                        <span class="tooltip">犬の分を踏む。<br>（新しい靴を購入 3万円払う）</span>
+                        <span class="tooltip">犬の分を踏む。<br>（新しい靴を購入 3万円払う）[51]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 62%; left: 64.5%;">
-                        <span class="tooltip">税金の支払い。<br>（前回の給料による）</span>
+                        <span class="tooltip">税金の支払い。<br>（前回の給料による）[52]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 63%; left: 67.3%;">
-                        <span class="tooltip">家庭菜園のトマトが豊作。<br>（食費浮く 5,000円もらう）</span>
+                        <span class="tooltip">家庭菜園のトマトが豊作。<br>（食費浮く 5,000円もらう）[53]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 64%; left: 70%;">
-                        <span class="tooltip">子供が生まれる！<br>（出産祝い 100万円もらう）<br> ※未婚なら親戚の子供にお年玉をあげる-3万</span>
+                        <span class="tooltip">子供が生まれる！<br>（出産祝い 100万円もらう）<br> ※未婚なら親戚の子供にお年玉をあげる-3万[54]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 65%; left: 72.5%;">
-                        <span class="tooltip">学資保険に加入する。<br>（5万円払う）</span>
+                        <span class="tooltip">学資保険に加入する。<br>（5万円払う）[55]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 66%; left: 75.3%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[56]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 65.5%; left: 78%;">
-                        <span class="tooltip">ゴルフを始める。<br>（セット代 20万円払う）</span>
+                        <span class="tooltip">ゴルフを始める。<br>（セット代 20万円払う）[57]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 62%; left: 79.8%;">
-                        <span class="tooltip">ホールインワン達成！<br>（祝い金等 30万円もらう）</span>
+                        <span class="tooltip">ホールインワン達成！<br>（祝い金等 30万円もらう）[58]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 58%; left: 80.3%;">
-                        <span class="tooltip">ぎっくり腰になる。<br>（1回休み）</span>
+                        <span class="tooltip">ぎっくり腰になる。<br>（1回休み）[59]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 54.5%; left: 80.3%;">
-                        <span class="tooltip">温泉旅行で湯治する。<br>（5万円払う）</span>
+                        <span class="tooltip">温泉旅行で湯治する。<br>（5万円払う）[60]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 51%; left: 79.8%;">
-                        <span class="tooltip">会社の業績悪化。<br>（給料カット。次の給料日まで半減）</span>
+                        <span class="tooltip">会社の業績悪化。<br>（給料カット。次の給料日まで半減）[61]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 48%; left: 79.3%;">
-                        <span class="tooltip">転職の誘いが来る。<br>（給料＋10万もらう）</span>
+                        <span class="tooltip">転職の誘いが来る。<br>（給料＋10万もらう）[62]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 44.5%; left: 78%;">
-                        <span class="tooltip">洗濯機が壊れて水浸し。<br>（修理費と賠償 15万円払う）</span>
+                        <span class="tooltip">洗濯機が壊れて水浸し。<br>（修理費と賠償 15万円払う）[63]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 41.8%; left: 76%;">
-                        <span class="tooltip">実家の蔵から骨董品発見。<br>（鑑定額 50万円もらう）</span>
+                        <span class="tooltip">実家の蔵から骨董品発見。<br>（鑑定額 50万円もらう）[64]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 40%; left: 74%;">
-                        <span class="tooltip">老後のために投資を始める。<br>（投資信託 10万円払う）</span>
+                        <span class="tooltip">老後のために投資を始める。<br>（投資信託 10万円払う）[65]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 39%; left: 72%;">
-                        <span class="tooltip">義母にマルチ勧誘される。<br>（20万円詐欺に遭う）</span>
+                        <span class="tooltip">義母にマルチ勧誘される。<br>（20万円詐欺に遭う）[66]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 37%; left: 69.3%;">
-                        <span class="tooltip">台風で屋根が飛ぶ。<br>（修理 100万円払う）<br>※火災保険あれば免除</span>
+                        <span class="tooltip">台風で屋根が飛ぶ。<br>（修理 100万円払う）<br>※火災保険あれば免除[67]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 37%; left: 66.5%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[68]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 36%; left: 63.8%;">
-                        <span class="tooltip">勤続10年リフレッシュ休暇。<br>（2マス進む）</span>
+                        <span class="tooltip">勤続10年リフレッシュ休暇。<br>（2マス進む）[69]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 35%; left: 61%;">
-                        <span class="tooltip">子供の教育費がかさむ。<br>（30万円払う ※子持ちのみ）</span>
+                        <span class="tooltip">子供の教育費がかさむ。<br>（30万円払う ※子持ちのみ）[70]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 35%; left: 58.5%;">
-                        <span class="tooltip">子供がコンクールで優勝！<br>（10万円もらう ※子持ちのみ）</span>
+                        <span class="tooltip">子供がコンクールで優勝！<br>（10万円もらう ※子持ちのみ）[71]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 35%; left: 55.8%;">
-                        <span class="tooltip">地域の役員を押し付けられる。<br>（ストレスで1回休み）</span>
+                        <span class="tooltip">地域の役員を押し付けられる。<br>（ストレスで1回休み）[72]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 35%; left: 53%;">
-                        <span class="tooltip">ふるさと納税の返礼品が届く。<br>（食費が浮く 3万円もらう）</span>
+                        <span class="tooltip">ふるさと納税の返礼品が届く。<br>（食費が浮く 3万円もらう）[73]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 35%; left: 50%;">
-                        <span class="tooltip">高級腕時計を買ってドヤる。<br>（100万円払う）</span>
+                        <span class="tooltip">高級腕時計を買ってドヤる。<br>（100万円払う）[74]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 39%; left: 50%;">
-                        <span class="tooltip">腕時計を紛失。</span>
+                        <span class="tooltip">腕時計を紛失。[75]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 41.5%; left: 50%;">
-                        <span class="tooltip">児童虐待で警察に指導。<br>（30万円の罰金）</span>
+                        <span class="tooltip">児童虐待で警察に指導。<br>（30万円の罰金）[76]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 44%; left: 48.5%;">
-                        <span class="tooltip">恋人の誕生日にバッグを買う。<br>（参加費 20万円払う）</span>
+                        <span class="tooltip">恋人の誕生日にバッグを買う。<br>（参加費 20万円払う）[77]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 44%; left: 46%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[78]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 43%; left: 43.5%;">
-                        <span class="tooltip">人間ドックで再検査。<br>（検査費 5万円払う）</span>
+                        <span class="tooltip">人間ドックで再検査。<br>（検査費 5万円払う）[79]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 40%; left: 42%;">
-                        <span class="tooltip">健康のためにジムに通う。<br>（会費 10万円払う）</span>
+                        <span class="tooltip">健康のためにジムに通う。<br>（会費 10万円払う）[80]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 37%; left: 42%;">
-                        <span class="tooltip">マッチョになってモテ期到来。<br>（全員から愛の5万円もらう）</span>
+                        <span class="tooltip">マッチョになってモテ期到来。<br>（全員から愛の5万円もらう）[81]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 34%; left: 41%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[82]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 30%; left: 38.8%;">
-                        <span class="tooltip">熟年離婚の危機<br>（慰謝料 500万円払う）</span>
+                        <span class="tooltip">熟年離婚の危機<br>（慰謝料 500万円払う）[83]</span>
+                    </div>
+                    <div class="tooltip-wrapper square" style="top: 37%; left: 38.5%;">
+                        <span class="tooltip">危機を乗り越え絆が深まる。<br>（ダイヤの指輪を買う 100万円払う）[84]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 37%; left: 35.5%;">
-                        <span class="tooltip">危機を乗り越え絆が深まる。<br>（ダイヤの指輪を買う 100万円払う）</span>
+                        <span class="tooltip">危機を乗り越え絆が深まる。<br>（ダイヤの指輪を買う 100万円払う）[85]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 39%; left: 33%;">
-                        <span class="tooltip">会社が倒産！リストラ！<br>（退職金 50万円もらうが無職になる）</span>
+                        <span class="tooltip">会社が倒産！リストラ！<br>（退職金 50万円もらうが無職になる）[86]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 41%; left: 31%;">
-                        <span class="tooltip">蕎麦屋に投資。<br>（開業資金 300万円払う）</span>
+                        <span class="tooltip">蕎麦屋に投資。<br>（開業資金 300万円払う）[87]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 43%; left: 29%;">
-                        <span class="tooltip">投資先の蕎麦屋が大繁盛。<br>（利益 500万円もらう）</span>
+                        <span class="tooltip">投資先の蕎麦屋が大繁盛。<br>（利益 500万円もらう）[88]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 46%; left: 27%;">
-                        <span class="tooltip">投資先の蕎麦屋が潰れる。<br>（600万円払う）</span>
+                        <span class="tooltip">投資先の蕎麦屋が潰れる。<br>（600万円払う）[89]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 49%; left: 26%;">
-                        <span class="tooltip">孫が生まれる。<br>（お祝い 20万円払う）</span>
+                        <span class="tooltip">孫が生まれる。<br>（お祝い 20万円払う）[90]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 52%; left: 25%;">
-                        <span class="tooltip">孫にお小遣いをせびられる。<br>（5万円払う）</span>
+                        <span class="tooltip">孫にお小遣いをせびられる。<br>（5万円払う）[91]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 54%; left: 24%;">
-                        <span class="tooltip">親戚にお金をせがまれる。<br>（50万円払う）</span>
+                        <span class="tooltip">親戚にお金をせがまれる。<br>（50万円払う）[92]</span>
                     </div>
 
                     <div class="tooltip-wrapper square" style="top: 58%; left: 23.5%;">
-                        <span class="tooltip">カジノで全財産をかける<br>（無一文）</span>
+                        <span class="tooltip">カジノで全財産をかける<br>（無一文）[93]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 61%; left: 22.5%;">
-                        <span class="tooltip">石油を掘り当てる。<br>（1億円もらう）</span>
+                        <span class="tooltip">石油を掘り当てる。<br>（1億円もらう）[94]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 64%; left: 22%;">
-                        <span class="tooltip">コツコツ貯めた500円玉貯金を開封。<br>（30万円もらう）</span>
+                        <span class="tooltip">コツコツ貯めた500円玉貯金を開封。<br>（30万円もらう）[95]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 67.5%; left: 21%;">
-                        <span class="tooltip">家庭菜園が巨大がしてテレビ取材<br>（謝礼 5万円もらう）</span>
+                        <span class="tooltip">家庭菜園が巨大がしてテレビ取材<br>（謝礼 5万円もらう）[96]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 70.5%; left: 20%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[97]</span>
                     </div>
 
                     <div class="tooltip-wrapper square" style="top: 72.5%; left: 19%;">
-                        <span class="tooltip">富豪に恵んでもらう。<br>（資金ゼロの場合1億円）</span>
+                        <span class="tooltip">富豪に恵んでもらう。<br>（資金ゼロの場合1億円）[98]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 74%; left: 16%;">
-                        <span class="tooltip">隕石が庭に落ちてくる。<br>（研究機関に売る 500万円もらう）</span>
+                        <span class="tooltip">隕石が庭に落ちてくる。<br>（研究機関に売る 500万円もらう）[99]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 74%; left: 13%;">
-                        <span class="tooltip">宇宙人と遭遇。<br>（記憶を消されて３マス戻る）</span>
+                        <span class="tooltip">宇宙人と遭遇。<br>（記憶を消されて３マス戻る）[100]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 72.5%; left: 11%;">
-                        <span class="tooltip">世界一周クルーズへ出発。<br>（旅費 300万円払う）</span>
+                        <span class="tooltip">世界一周クルーズへ出発。<br>（旅費 300万円払う）[101]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 69.5%; left: 9%;">
-                        <span class="tooltip">戦場で大富豪と仲良くなる。<br>（壺をもらう）</span>
+                        <span class="tooltip">戦場で大富豪と仲良くなる。<br>（壺をもらう）[102]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 65%; left: 8%;">
-                        <span class="tooltip">実は壺が偽物だった。<br>（鑑定量 10万円払う）</span>
+                        <span class="tooltip">実は壺が偽物だった。<br>（鑑定量 10万円払う）[103]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 61%; left: 7.5%;">
-                        <span class="tooltip">シロアリ被害で家が倒壊。<br>（修繕費 1000万円払う）</span>
+                        <span class="tooltip">シロアリ被害で家が倒壊。<br>（修繕費 1000万円払う）[104]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 58%; left: 7%;">
-                        <span class="tooltip">選挙に出馬する。<br>（選挙資金 500万円払う）</span>
+                        <span class="tooltip">選挙に出馬する。<br>（選挙資金 500万円払う）[105]</span>
                     </div>
 
                     <div class="tooltip-wrapper square" style="top: 54.5%; left: 7%;">
-                        <span class="tooltip">当選！政治家になる。<br>（ボーナス 1000万円もらう）</span>
+                        <span class="tooltip">当選！政治家になる。<br>（ボーナス 1000万円もらう）[106]</span>
                     </div>
 
                     <div class="tooltip-wrapper square" style="top: 51%; left: 7.5%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[107]</span>
                     </div>
 
                     <div class="tooltip-wrapper square" style="top: 47%; left: 7.7%;">
-                        <span class="tooltip">徳川埋蔵金を発見！<br>（5000万円もらう）</span>
+                        <span class="tooltip">徳川埋蔵金を発見！<br>（5000万円もらう）[108]</span>
                     </div>
 
                     <div class="tooltip-wrapper square" style="top: 44%; left: 8.3%;">
-                        <span class="tooltip">徳川埋蔵金が偽物だった。<br>（スコップ代 1万円払う）</span>
+                        <span class="tooltip">徳川埋蔵金が偽物だった。<br>（スコップ代 1万円払う）[109]</span>
                     </div>
 
                     <div class="tooltip-wrapper square" style="top: 40%; left: 9%;">
-                        <span class="tooltip">ユーチューバーの孫とコラボ。<br>（収益 100万円もらう）</span>
+                        <span class="tooltip">ユーチューバーの孫とコラボ。<br>（収益 100万円もらう）[110]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 37.7%; left: 11.1%;">
-                        <span class="tooltip">高齢者詐欺を撃退！<br>（警察から表彰 10万円もらう）</span>
+                        <span class="tooltip">高齢者詐欺を撃退！<br>（警察から表彰 10万円もらう）[111]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 34.9%; left: 13.0%;">
-                        <span class="tooltip">ゲートボール大会で優勝。<br>（3万円払う）</span>
+                        <span class="tooltip">ゲートボール大会で優勝。<br>（3万円払う）[112]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 32.7%; left: 15.5%;">
-                        <span class="tooltip">突然のモテ期、再び。<br>（隠し子発覚？養育費 1000万円払う）</span>
+                        <span class="tooltip">突然のモテ期、再び。<br>（隠し子発覚？養育費 1000万円払う）[113]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 30.4%; left: 17.8%;">
-                        <span class="tooltip">昔貸したお金が利子付きで返ってくる。<br>（100万円もらう）</span>
+                        <span class="tooltip">昔貸したお金が利子付きで返ってくる。<br>（100万円もらう）[114]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 28.7%; left: 20.7%;">
-                        <span class="tooltip">豪邸をリフォームする。<br>（1500万円払う）</span>
+                        <span class="tooltip">豪邸をリフォームする。<br>（1500万円払う）[115]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 27.1%; left: 23.7%;">
-                        <span class="tooltip">財務省の監査が入る。<br>（追徴課税 手持ちの半分没収）</span>
+                        <span class="tooltip">財務省の監査が入る。<br>（追徴課税 手持ちの半分没収）[116]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 25.9%; left: 25.9%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[117]</span>
                     </div>
-                    <div class="tooltip-wrapper square" style="top: 25.2%; left: 28.0%;">
-                        <span class="tooltip">名誉市民に選ばれる。<br>（名誉市民手当 300万円もらう）</span>
+                    <div class="tooltip-wrapper square" style="top: 25.2%; left: 28%;">
+                        <span class="tooltip">名誉市民に選ばれる。<br>（名誉市民手当 300万円もらう）[118]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 24.2%; left: 31.3%;">
-                        <span class="tooltip">若返りの薬を怪しい商人から買う。<br>（50万円払う）</span>
+                        <span class="tooltip">若返りの薬を怪しい商人から買う。<br>（50万円払う）[119]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 23.1%; left: 34.0%;">
-                        <span class="tooltip">薬の効果でお腹を下す。<br>（病院代1万円払う）</span>
+                        <span class="tooltip">薬の効果でお腹を下す。<br>（病院代1万円払う）[120]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 23.4%; left: 37.0%;">
-                        <span class="tooltip">全員にプレゼントを配る。<br>（全員から100万円ずつ払う）</span>
+                        <span class="tooltip">全員にプレゼントを配る。<br>（全員から100万円ずつ払う）[121]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 23.2%; left: 39.1%;">
-                        <span class="tooltip">全員から慕われる。<br>（全員から100万円ずつもらう）</span>
+                        <span class="tooltip">全員から慕われる。<br>（全員から100万円ずつもらう）[122]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.7%; left: 42.5%;">
-                        <span class="tooltip">開発したAIアプリが世界的な大ヒット!<br>（5000万円もらう）</span>
+                        <span class="tooltip">開発したAIアプリが世界的な大ヒット!<br>（5000万円もらう）[123]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.4%; left: 44.3%;">
-                        <span class="tooltip">自宅の庭から徳川埋蔵金がざくざく出てきた。<br>（4500万円もらう）</span>
+                        <span class="tooltip">自宅の庭から徳川埋蔵金がざくざく出てきた。<br>（4500万円もらう）[124]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.2%; left: 47.2%;">
-                        <span class="tooltip">昔買った絵画が、実は巨匠の作品だった。<br>（3000万円もらう）</span>
+                        <span class="tooltip">昔買った絵画が、実は巨匠の作品だった。<br>（3000万円もらう）[125]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.2%; left: 50.2%;">
-                        <span class="tooltip">宇宙旅行ペアチケットが当選(換金)。<br>（2000万円もらう）</span>
+                        <span class="tooltip">宇宙旅行ペアチケットが当選(換金)。<br>（2000万円もらう）[126]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 21.4%; left: 53.3%;">
-                        <span class="tooltip">【給料日】<br>（給料をもらう）</span>
+                        <span class="tooltip">【給料日】<br>（給料をもらう）[127]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.4%; left: 55.3%;">
-                        <span class="tooltip">所有していた山林がリゾート開発地に選ばれた。<br>（3500万円もらう）</span>
+                        <span class="tooltip">所有していた山林がリゾート開発地に選ばれた。<br>（3500万円もらう）[128]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.1%; left: 58.1%;">
-                        <span class="tooltip">仮想通貨が暴騰して「億り人」ならぬ「半億り人」に。<br>（5000万円もらう）</span>
+                        <span class="tooltip">仮想通貨が暴騰して「億り人」ならぬ「半億り人」に。<br>（5000万円もらう）[129]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.6%; left: 60.8%;">
-                        <span class="tooltip">後の夢、海外の古城を衝動買い。<br>（5000万円払う）</span>
+                        <span class="tooltip">後の夢、海外の古城を衝動買い。<br>（5000万円払う）[130]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.1%; left: 63.7%;">
-                        <span class="tooltip">投資話が大失敗。財産が紙切れに。<br>（3000万円払う）</span>
+                        <span class="tooltip">投資話が大失敗。財産が紙切れに。<br>（3000万円払う）[131]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.2%; left: 65.8%;">
-                        <span class="tooltip">超豪華世界一周クルーズへ出発。<br>（1500万円払う）</span>
+                        <span class="tooltip">超豪華世界一周クルーズへ出発。<br>（1500万円払う）[132]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.1%; left: 68.8%;">
-                        <span class="tooltip">豪邸の地下に巨大なシェルターを作ってしまった。<br>（2000万円払う）</span>
+                        <span class="tooltip">豪邸の地下に巨大なシェルターを作ってしまった。<br>（2000万円払う）[133]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.9%; left: 71.4%;">
-                        <span class="tooltip">孫や親戚全員に新車をプレゼントする。<br>（1000万円払う）</span>
+                        <span class="tooltip">孫や親戚全員に新車をプレゼントする。<br>（1000万円払う）[134]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.9%; left: 75.1%;">
-                        <span class="tooltip">美術品のオークションで熱くなりすぎて落札。<br>（4000万円払う）</span>
+                        <span class="tooltip">美術品のオークションで熱くなりすぎて落札。<br>（4000万円払う）[135]</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 22.9%; left: 78.1%;">
-                        <span class="tooltip">【ゴール！】<br>1着：+1億円 / 2着：+5千万<br>3着：+3千万 / 4着以下：なし</span>
+                        <span class="tooltip">【ゴール！】<br>1着：+1億円 / 2着：+5千万<br>3着：+3千万 / 4着以下：なし[136]</span>
                     </div>
                 </div>
-                
+
             </div>
 
             <div class="bottom-area">
@@ -487,7 +478,7 @@
             <ul class="status-info" id="userInfo">
 
                 <li>ユーザー：</li>
-                <li>・ ゴールまでの距離：</li>
+                <li>・ 現在の位置：0, ゴールまでの距離：136</li>
                 <li>・ 職業：</li>
                 <li>・ 所持金：</li>
                 <li>・ 配偶者の有無：</li>
@@ -548,6 +539,8 @@
 
             };
         };
+
+
 
 
 
@@ -631,7 +624,7 @@
 
 
         function renderUserStatus(user) {
-            statusItems[1].textContent = `・ ゴールまでの距離：${user.spot_id}`;
+            statusItems[1].textContent = `・ 現在の位置：${user.spot_id + 1}, ゴールまでの距離：${135 - user.spot_id}`;
             statusItems[0].textContent = `ユーザー：${user.name}`;
             statusItems[2].textContent = `・ 職業：${user.job?.name ?? "なし"}`;
             statusItems[3].textContent = `・ 所持金：${user.money}`;
@@ -843,93 +836,141 @@
 
         const SPOT_POSITIONS = {
             0: { top: "86%", left: "22%", text: "スタート（大学卒業・旅立ち）" },
-            1: { top: "86%", left: "24%", text: "卒業旅行で散財する（3万円払う）" },
-            2: { top: "86%", left: "27%", text: "実家の手伝い（1万円もらう）" },
-            3: { top: "86%", left: "29.9%", text: "家具をニトリで爆買い（5万円払う）" },
-            4: { top: "86%", left: "32.5%", text: "【給料日】（給料をもらう）" },
-            5: { top: "86%", left: "35.5%", text: "アルバイトでミス（10万円払う）" },
-            6: { top: "86%", left: "38.3%", text: "福引でお米券（5,000円もらう）" },
-            7: { top: "86%", left: "41.3%", text: "風邪をひく（1回休み）" },
-            8: { top: "86%", left: "44.0%", text: "SNSがプチバズ（3万円もらう）" },
-            9: { top: "86%", left: "47.0%", text: "スマホ修理（2万円払う）" },
-            10: { top: "85%", left: "49.7%", text: "引越し手伝い（1万円もらう）" },
-            11: { top: "85%", left: "52.7%", text: "健康器具購入（3万円払う）" },
-            12: { top: "85%", left: "55.5%", text: "コンビニスイーツ（5,000円払う）" },
-            13: { top: "84%", left: "58.3%", text: "マッチングアプリ課金（1万円払う）" },
-            14: { top: "84%", left: "61%", text: "【就職マス】（10万円もらう）" },
-            15: { top: "83%", left: "64%", text: "親にプレゼント（3万円払う）" },
-            16: { top: "82%", left: "66.5%", text: "同期と飲み会" },
-            17: { top: "81%", left: "69%", text: "靴をなくす（1万円払う）" },
-            18: { top: "79%", left: "71%", text: "資格合格（5万円もらう）" },
-            19: { top: "76%", left: "71%", text: "【給料日】" },
-            20: { top: "73%", left: "69.5%", text: "フェス参加（2万円払う）" },
-            21: { top: "72%", left: "67%", text: "迷い猫保護（3万円もらう）" },
-            22: { top: "71%", left: "64.5%", text: "寝坊遅刻（1万円払う）" },
-            23: { top: "70%", left: "61.8%", text: "ボーナス（給料半額）" },
-            24: { top: "70%", left: "59.3%", text: "高級自転車（10万円払う）" },
-            25: { top: "70%", left: "56.8%", text: "健康になり3マス進む" },
-            26: { top: "70%", left: "54%", text: "外食（5,000円払う）" },
-            27: { top: "69%", left: "51.5%", text: "路上ライブ（2,000円もらう）" },
-            28: { top: "69%", left: "48.8%", text: "カード請求（5万円払う）" },
-            29: { top: "69%", left: "46%", text: "同窓会イベント" },
-            30: { top: "68%", left: "43.5%", text: "【給料日】" },
-            31: { top: "68%", left: "41%", text: "車購入（50万円払う）" },
-            32: { top: "67%", left: "38.5%", text: "ドライブデート（3万円払う）" },
-            33: { top: "66%", left: "36%", text: "営業成績トップ（30万円）" },
-            34: { top: "66%", left: "33.5%", text: "暴飲暴食（2万円払う）" },
-            35: { top: "65%", left: "31%", text: "結婚式ラッシュ（10万円払う）" },
-            36: { top: "62%", left: "29.5%", text: "【結婚マス】" },
-            37: { top: "59%", left: "29.3%", text: "ハワイ旅行（50万円払う）" },
-            38: { top: "56%", left: "30.5%", text: "手料理で2マス進む" },
-            39: { top: "54%", left: "32.7%", text: "家出（1回休み）" },
-            40: { top: "53%", left: "35%", text: "【給料日】" },
-            41: { top: "52.5%", left: "37.5%", text: "子犬を飼う（20万円払う）" },
-            42: { top: "53%", left: "40.3%", text: "宝くじ当選（100万円）" },
-            43: { top: "53.5%", left: "43%", text: "親知らず治療（1万円払う）" },
-            44: { top: "54%", left: "45.5%", text: "副業成功（20万円）" },
-            45: { top: "55%", left: "48.3%", text: "ネット詐欺対策（1万円払う）" },
-            46: { top: "55%", left: "51%", text: "騒音トラブル（30万円払う）" },
-            47: { top: "57%", left: "54%", text: "キャンプ道具（15万円払う）" },
-            48: { top: "58%", left: "57%", text: "YouTuber（5万円もらう）" },
-            49: { top: "59%", left: "59.5%", text: "税金支払い" },
-            50: { top: "60%", left: "62%", text: "家庭菜園（5,000円）" },
-            51: { top: "62%", left: "64.5%", text: "子供誕生（100万円）" },
-            52: { top: "63%", left: "67.3%", text: "学資保険（5万円払う）" },
-            53: { top: "64%", left: "70%", text: "【給料日】" },
-            54: { top: "65%", left: "72.5%", text: "ゴルフ開始（20万円払う）" },
-            55: { top: "66%", left: "75.3%", text: "ホールインワン（30万円）" },
-            56: { top: "65.5%", left: "78%", text: "ぎっくり腰（1回休み）" },
-            57: { top: "62%", left: "79.8%", text: "温泉旅行（5万円払う）" },
-            58: { top: "58%", left: "82.3%", text: "業績悪化（給料半額）" },
-            59: { top: "54.5%", left: "80.3%", text: "転職の誘い" },
-            60: { top: "51%", left: "79.8%", text: "洗濯機故障（15万円払う）" },
-            61: { top: "48%", left: "79.3%", text: "骨董品発見（50万円）" },
-            62: { top: "44.5%", left: "78%", text: "老後投資（10万円払う）" },
-            63: { top: "41.8%", left: "76%", text: "台風被害（100万円）" },
-            64: { top: "40%", left: "74%", text: "【給料日】" },
-            65: { top: "39%", left: "72%", text: "リフレッシュ休暇" },
-            66: { top: "37%", left: "69.3%", text: "教育費（30万円払う）" },
-            67: { top: "37%", left: "66.5%", text: "子供が優勝（10万円）" },
-            68: { top: "36%", left: "63.8%", text: "地域役員（1回休み）" },
-            69: { top: "35%", left: "61%", text: "ふるさと納税（3万円）" },
-            70: { top: "35%", left: "58.5%", text: "高級腕時計（100万円払う）" },
-            71: { top: "35%", left: "55.8%", text: "腕時計紛失（1回休み）" },
-            72: { top: "35%", left: "53%", text: "人間ドック（5万円払う）" },
-            73: { top: "35%", left: "50%", text: "【給料日】" },
-            74: { top: "31%", left: "50%", text: "ジム通い（10万円払う）" },
-            75: { top: "29%", left: "48.5%", text: "モテ期到来（5万円×全員）" },
-            76: { top: "29%", left: "45.5%", text: "熟年離婚の危機" },
-            77: { top: "29%", left: "43%", text: "怪我（5万円払う）" },
-            78: { top: "33%", left: "42%", text: "絆が深まる（100万円払う）" },
-            79: { top: "39%", left: "50%", text: "会社でミス（1回休み）" },
-            80: { top: "41.5%", left: "50%", text: "飲み会（1万円払う）" },
-            81: { top: "44%", left: "48.5%", text: "親孝行（40万円もらう）" },
-            82: { top: "44%", left: "46%", text: "交通事故（100万円払う）" },
-            83: { top: "43%", left: "43.5%", text: "へそくり発見（5万円）" },
-            84: { top: "40%", left: "42%", text: "インフル（1回休み）" },
-            85: { top: "37%", left: "42%", text: "ビンゴ（10万円）" },
-            86: { top: "35%", left: "42%", text: "倒産・リストラ（50万円）" }
-            // 必要な分だけ定義
+            1: { top: "86%", left: "24%", text: "職業マス（会社員）" },
+            2: { top: "86%", left: "27%", text: "職業マス（医者）" },
+            3: { top: "86%", left: "29.9%", text: "職業マス（アルバイトリーダー）" },
+            4: { top: "86%", left: "32.5%", text: "職業マス（エンジニア）" },
+            5: { top: "86%", left: "35.5%", text: "職業マス（研究者）" },
+            6: { top: "86%", left: "38.3%", text: "職業マス（教員）" },
+            7: { top: "86%", left: "41.3%", text: "職業マス（公務員）" },
+            8: { top: "86%", left: "44.0%", text: "職業マス（経営者）" },
+            9: { top: "86%", left: "47.0%", text: "【全員止まる】" },
+            10: { top: "85%", left: "49.7%", text: "友人の引越しを手伝う（お礼に1万円もらう）" },
+            11: { top: "85%", left: "52.7%", text: "深夜のテンションで謎の健康器具を買う（3万円払う）" },
+            12: { top: "85%", left: "55.5%", text: "コンビニスイーツにハマる（5,000円払う）" },
+            13: { top: "84%", left: "58.3%", text: "マッチングアプリに登録（課金1万円払う）" },
+            14: { top: "84%", left: "61%", text: "実家の手伝い（お小遣い1万円もらう）" },
+            15: { top: "83%", left: "64%", text: "初任給で親にプレゼント（3万円払う）" },
+            16: { top: "82%", left: "66.5%", text: "同期と飲み会で意気投合" },
+            17: { top: "81%", left: "69%", text: "満員電車で靴が片方なくなる（靴代1万円払う）" },
+            18: { top: "79%", left: "71%", text: "資格試験に合格（報奨金5万円もらう）" },
+            19: { top: "76%", left: "71%", text: "【給料日】給料をもらう" },
+            20: { top: "73%", left: "69.5%", text: "週末にフェスへ行く（チケット代2万円払う）" },
+            21: { top: "72%", left: "67%", text: "迷い猫を保護（謝礼3万円もらう）" },
+            22: { top: "71%", left: "64.5%", text: "寝坊して遅刻（罰金1万円払う）" },
+            23: { top: "70%", left: "61.8%", text: "ボーナスが出た（給料の半額をもらう）" },
+            24: { top: "70%", left: "59.3%", text: "衝動的に高い自転車を買う（10万円払う）" },
+            25: { top: "70%", left: "56.8%", text: "サイクリングで健康になる（3マス進む）" },
+            26: { top: "70%", left: "54%", text: "自炊に失敗して外食（5,000円払う）" },
+            27: { top: "69%", left: "51.5%", text: "路上ライブで投げ銭をもらう（2,000円もらう）" },
+            28: { top: "69%", left: "48.8%", text: "クレジットカードの請求額に驚愕（5万円払う）" },
+            29: { top: "69%", left: "46%", text: "同窓会で昔の恋人に再会（3万円払う）" },
+            30: { top: "68%", left: "43.5%", text: "イベントなし" },
+            31: { top: "68%", left: "41%", text: "【給料日】給料をもらう" },
+            32: { top: "67%", left: "38.5%", text: "車を購入（頭金50万円払う）" },
+            33: { top: "66%", left: "36%", text: "ドライブデート（3万円払う）" },
+            34: { top: "66%", left: "33.5%", text: "営業成績トップ（30万円もらう）" },
+            35: { top: "65%", left: "31%", text: "ストレスで暴飲暴食（2万円払う）" },
+            36: { top: "62%", left: "29.5%", text: "友人の結婚式ラッシュ（10万円払う）" },
+            37: { top: "59%", left: "29.3%", text: "【ストップ！結婚マス】全員から3万円" },
+            38: { top: "56%", left: "30.5%", text: "ハワイ旅行（50万円払う）" },
+            39: { top: "54%", left: "32.7%", text: "手料理が美味しい（2マス進む）" },
+            40: { top: "53%", left: "35%", text: "喧嘩して家出（1回休み）" },
+            41: { top: "52.5%", left: "37.5%", text: "【給料日】給料をもらう" },
+            42: { top: "53%", left: "40.3%", text: "子犬を飼い始める（20万円払う）" },
+            43: { top: "53.5%", left: "43%", text: "宝くじ当選（100万円もらう）" },
+            44: { top: "54%", left: "45.5%", text: "親知らずを抜く（1万円払う）" },
+            45: { top: "55%", left: "48.3%", text: "副業が軌道に乗る（20万円もらう）" },
+            46: { top: "55%", left: "51%", text: "ネット詐欺対策（1万円払う）" },
+            47: { top: "57%", left: "54%", text: "騒音トラブルで引越し（30万円払う）" },
+            48: { top: "58%", left: "57%", text: "キャンプ道具を揃える（15万円払う）" },
+            49: { top: "59%", left: "59.5%", text: "YouTuber収益（5万円もらう）" },
+            50: { top: "60%", left: "62%", text: "犬のフンを踏む（靴代3万円）" },
+            51: { top: "62%", left: "64.5%", text: "税金の支払い（前回給料による）" },
+            52: { top: "63%", left: "67.3%", text: "家庭菜園が豊作（5,000円もらう）" },
+            53: { top: "64%", left: "70%", text: "子供誕生（未婚は-3万円）" },
+            54: { top: "65%", left: "72.5%", text: "学資保険加入（5万円払う）" },
+            55: { top: "66%", left: "75.3%", text: "【給料日】給料をもらう" },
+            56: { top: "65.5%", left: "78%", text: "ゴルフを始める（20万円払う）" },
+            57: { top: "62%", left: "79.8%", text: "ホールインワン達成（30万円もらう）" },
+            58: { top: "58%", left: "80.3%", text: "ぎっくり腰（1回休み）" },
+            59: { top: "54.5%", left: "80.3%", text: "温泉旅行（5万円払う）" },
+            60: { top: "51%", left: "79.8%", text: "業績悪化（給料半減）" },
+            61: { top: "48%", left: "79.3%", text: "転職の誘い（給料＋10万）" },
+            62: { top: "44.5%", left: "78%", text: "洗濯機故障（15万円払う）" },
+            63: { top: "41.8%", left: "76%", text: "骨董品発見（50万円もらう）" },
+            64: { top: "40%", left: "74%", text: "投資を始める（10万円払う）" },
+            65: { top: "39%", left: "72%", text: "マルチ商法に遭う（20万円失う）" },
+            66: { top: "37%", left: "69.3%", text: "台風で屋根修理（100万円払う）" },
+            67: { top: "37%", left: "66.5%", text: "【給料日】給料をもらう" },
+            68: { top: "36%", left: "63.8%", text: "勤続10年休暇（2マス進む）" },
+            69: { top: "35%", left: "61%", text: "教育費がかさむ（30万円払う）" },
+            70: { top: "35%", left: "58.5%", text: "子供が優勝（10万円もらう）" },
+            71: { top: "35%", left: "55.8%", text: "地域役員で1回休み" },
+            72: { top: "35%", left: "53%", text: "ふるさと納税返礼品（3万円分）" },
+            73: { top: "35%", left: "50%", text: "高級腕時計を買ってドヤる。（100万円払う）" },
+            74: { top: "39%", left: "50%", text: "腕時計を紛失。" },
+            75: { top: "41.5%", left: "50%", text: "児童虐待で警察に指導。（30万円の罰金）" },
+            76: { top: "44%", left: "48.5%", text: "恋人の誕生日にバッグを買う。（参加費20万円払う）" },
+            77: { top: "44%", left: "46%", text: "【給料日】給料をもらう" },
+            78: { top: "43%", left: "43.5%", text: "人間ドックで再検査。（検査費5万円払う）" },
+            79: { top: "40%", left: "42%", text: "健康のためにジムに通う。（会費10万円払う）" },
+            80: { top: "37%", left: "42%", text: "マッチョになってモテ期到来。（全員から5万円もらう）" },
+            81: { top: "34%", left: "41%", text: "【給料日】給料をもらう" },
+            82: { top: "30%", left: "38.8%", text: "熟年離婚の危機。（慰謝料500万円払う）" },
+            83: { top: "37%", left: "38.5%", text: "危機を乗り越え絆が深まる。（ダイヤの指輪100万円払う）" },
+            84: { top: "37%", left: "35.5%", text: "危機を乗り越え絆が深まる。（ダイヤの指輪100万円払う）" },
+            85: { top: "39%", left: "33%", text: "会社が倒産！リストラ！（退職金50万円もらうが無職）" },
+            86: { top: "41%", left: "31%", text: "蕎麦屋に投資。（開業資金300万円払う）" },
+            87: { top: "43%", left: "29%", text: "投資先の蕎麦屋が大繁盛。（利益500万円もらう）" },
+            88: { top: "46%", left: "27%", text: "投資先の蕎麦屋が潰れる。（600万円払う）" },
+            89: { top: "49%", left: "26%", text: "孫が生まれる。（お祝い20万円払う）" },
+            90: { top: "52%", left: "25%", text: "孫にお小遣いをせびられる。（5万円払う）" },
+            91: { top: "54%", left: "24%", text: "親戚にお金をせがまれる。（50万円払う）" },
+            92: { top: "58%", left: "23.5%", text: "カジノで全財産をかける。（無一文）" },
+            93: { top: "61%", left: "22.5%", text: "石油を掘り当てる。（1億円もらう）" },
+            94: { top: "64%", left: "22%", text: "500円玉貯金を開封。（30万円もらう）" },
+            95: { top: "67.5%", left: "21%", text: "家庭菜園が巨大化しテレビ取材。（5万円もらう）" },
+            96: { top: "70.5%", left: "20%", text: "【給料日】給料をもらう" },
+            97: { top: "72.5%", left: "19%", text: "富豪に恵んでもらう。（資金ゼロ時1億円）" },
+            98: { top: "74%", left: "16%", text: "隕石が庭に落ちる。（500万円もらう）" },
+            99: { top: "74%", left: "13%", text: "宇宙人と遭遇。（3マス戻る）" },
+            100: { top: "72.5%", left: "11%", text: "世界一周クルーズへ出発。（300万円払う）" },
+            101: { top: "69.5%", left: "9%", text: "戦場で大富豪と仲良くなる。（壺をもらう）" },
+            102: { top: "65%", left: "8%", text: "壺が偽物だった。（鑑定料10万円払う）" },
+            103: { top: "61%", left: "7.5%", text: "シロアリ被害で家が倒壊。（1000万円払う）" },
+            104: { top: "58%", left: "7%", text: "選挙に出馬。（選挙資金500万円払う）" },
+            105: { top: "54.5%", left: "7%", text: "当選！政治家になる。（1000万円もらう）" },
+            106: { top: "51%", left: "7.5%", text: "【給料日】給料をもらう" },
+            107: { top: "47%", left: "7.7%", text: "徳川埋蔵金を発見！（5000万円もらう）" },
+            108: { top: "44%", left: "8.3%", text: "徳川埋蔵金が偽物だった。（1万円払う）" },
+            109: { top: "40%", left: "9%", text: "孫とYouTubeコラボ。（100万円もらう）" },
+            110: { top: "37.7%", left: "11.1%", text: "高齢者詐欺を撃退！（10万円もらう）" },
+            111: { top: "34.9%", left: "13%", text: "ゲートボール大会で優勝。（3万円払う）" },
+            112: { top: "32.7%", left: "15.5%", text: "突然のモテ期再来。（養育費1000万円払う）" },
+            113: { top: "30.4%", left: "17.8%", text: "昔貸した金が利子付きで返る。（100万円）" },
+            114: { top: "28.7%", left: "20.7%", text: "豪邸をリフォーム。（1500万円払う）" },
+            115: { top: "27.1%", left: "23.7%", text: "財務省の監査。（手持ち半分没収）" },
+            116: { top: "25.9%", left: "25.9%", text: "【給料日】給料をもらう" },
+            117: { top: "25.2%", left: "28%", text: "名誉市民に選ばれる。（300万円もらう）" },
+            118: { top: "24.2%", left: "31.3%", text: "若返りの薬を買う。（50万円払う）" },
+            119: { top: "23.1%", left: "34%", text: "薬の副作用で腹痛。（1万円払う）" },
+            120: { top: "23.4%", left: "37%", text: "全員にプレゼント。（全員から100万円）" },
+            121: { top: "23.2%", left: "39.1%", text: "全員から慕われる。（全員から100万円）" },
+            122: { top: "22.7%", left: "42.5%", text: "AIアプリが世界的大ヒット。（5000万円）" },
+            123: { top: "22.4%", left: "44.3%", text: "庭から徳川埋蔵金。（4500万円）" },
+            124: { top: "22.2%", left: "47.2%", text: "巨匠の絵画だった。（3000万円）" },
+            125: { top: "22.2%", left: "50.2%", text: "宇宙旅行チケット当選。（2000万円）" },
+            126: { top: "21.4%", left: "53.3%", text: "【給料日】給料をもらう" },
+            127: { top: "22.4%", left: "55.3%", text: "山林がリゾート地に。（3500万円）" },
+            128: { top: "22.1%", left: "58.1%", text: "仮想通貨暴騰。（5000万円）" },
+            129: { top: "22.6%", left: "60.8%", text: "海外の古城を衝動買い。（5000万円払う）" },
+            130: { top: "22.1%", left: "63.7%", text: "投資失敗。（3000万円払う）" },
+            131: { top: "22.2%", left: "65.8%", text: "超豪華世界一周クルーズ。（1500万円払う）" },
+            132: { top: "22.1%", left: "68.8%", text: "地下シェルター建設。（2000万円払う）" },
+            133: { top: "22.9%", left: "71.4%", text: "孫や親戚に新車。（1000万円払う）" },
+            134: { top: "22.9%", left: "75.1%", text: "美術品を熱くなって落札。（4000万円払う）" },
+            135: { top: "22.9%", left: "78.1%", text: "【ゴール！】順位に応じて賞金獲得" }
         };
 
         async function renderPieces() {

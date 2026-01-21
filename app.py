@@ -293,9 +293,6 @@ def roulette_result():
 
         spot_id_before = user.spot_id
         
-        # 1. 先に移動を行う
-        # 注意: * 10 があると1が出ても10マス進んでしまい、1〜9マス目のイベントを飛ばしてしまいます。
-        # 本来の挙動に合わせて * 10 を削除するか確認してください。
         user.spot_id += step  
         
         # 2. 移動後の位置(user.spot_id)を使ってイベント判定を行う
@@ -303,13 +300,19 @@ def roulette_result():
 
         reached_goal = False
         rank = None
+        prize = 0
 
         # ★ ゴール到達「瞬間」だけ処理
         if user.spot_id >= 135:
+            user.spot_id = 135
             reached_goal = True
             rank = state["goal_count"] + 1
 
             user.goal_order = rank
+            UserEvent.sell_all_stocks(user, db)
+            prize = UserEvent.goal_prize_for_rank(rank)
+            if prize:
+                user.money += prize
 
             db.execute("""
                 UPDATE game_state
@@ -326,7 +329,8 @@ def roulette_result():
             "step": step,
             "spot_id": user.spot_id,
             "goal": reached_goal,
-            "rank": rank
+            "rank": rank,
+            "prize": prize
         }
     finally:
         db.close()
