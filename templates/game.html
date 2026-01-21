@@ -54,7 +54,7 @@
                         <span class="tooltip">職業マス<br>（経営者）</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 86%; left: 47.0%;">
-                        <span class="tooltip">【全員止まる】</span>
+                        <span class="tooltip">【全員止まる】<br>【給料日】</span>
                     </div>
                     <div class="tooltip-wrapper square" style="top: 85%; left: 49.7%;">
                         <span class="tooltip">友人の引越しを手伝う。<br>（お礼に 1万円もらう）</span>
@@ -638,12 +638,12 @@
             const holdings = user.holdings || {};
 
             if (Object.keys(holdings).length === 0) {
-                statusItems[6].textContent = `・ 持ち株：なし`;
+                statusItems[4].textContent = `・ 持ち株：なし`;
             } else {
                 const list = Object.entries(holdings)
                     .map(([name, qty]) => `${name} ×${qty}`)
                     .join(" / ");
-                statusItems[6].textContent = `・ 持ち株：${list}`;
+                statusItems[4].textContent = `・ 持ち株：${list}`;
             }
         }
 
