@@ -68,6 +68,24 @@ def reset_session():
     init_db()
     return redirect(url_for("index"))
 
+@app.before_request
+def sync_session_with_db():
+    user_id = session.get("user_id")
+    if not user_id:
+        return
+
+    db = get_db()
+    try:
+        user = db.execute(
+            "SELECT 1 FROM users WHERE id = ?",
+            (user_id,)
+        ).fetchone()
+
+        if not user:
+            session.clear()
+    finally:
+        db.close()
+
 #参加画面
 @app.route("/", methods=["GET"])
 def index():
