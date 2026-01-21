@@ -113,11 +113,16 @@ https://xxxx-xx-xx-xx.ngrok-free.xxx
 
 - K24118 西田　拓矢 
     担当業務　プルリクエスト処理、進捗監査
+    連絡先　https://github.com/gutthsenna
 - K24005 天野　椋祐
     担当業務　フロントエンド担当
+  　連絡先　https://github.com/ryo9suke
 - K24045 加藤　璃空
     担当業務　バックエンド担当・イベント実装
+  　連絡先　https://github.com/katuen
 - K24047 鎌田　隼澄
     担当業務　画像作成
+  　連絡先　https://github.com/1500hayao
 - K24145 横井　優宇
-    担当業務　バックエンド担当・株売買処理実装
+    担当業務　バックエンド担当・株売買処理実装・その他修正等
+    連絡先　https://github.com/BBBBCDEF
